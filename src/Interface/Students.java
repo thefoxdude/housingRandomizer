@@ -149,7 +149,6 @@ public class Students extends JPanel {
 	
 	public void populateStudents() throws FileNotFoundException {
 		importInfo.grabStudents(studentsInfo);
-		importInfo.grabStudent(student);
 	}
 	
 	public JButton getMoveToHosts() {

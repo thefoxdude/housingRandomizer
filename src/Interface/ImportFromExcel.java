@@ -26,7 +26,7 @@ public class ImportFromExcel {
 	}
 	
 	// for filling class Student
-	public void grabStudent(ArrayList<Student> student) throws FileNotFoundException {
+	public ArrayList<Student> grabStudentList(ArrayList<Student> student) throws FileNotFoundException {
 		String fName = ("students.csv");
 		File F = new File(fName);
 		Scanner S = new Scanner(F);
@@ -51,6 +51,7 @@ public class ImportFromExcel {
 			}
 		}
 		S.close();
+		return student;
 	}
 	
 	// for filling class Hosts
@@ -69,7 +70,7 @@ public class ImportFromExcel {
 	}
 	
 	// for filling class HostHome
-	public void grabHost(ArrayList<HostHome> hostHome) throws FileNotFoundException {
+	public ArrayList<HostHome> grabHostList(ArrayList<HostHome> hostHome) throws FileNotFoundException {
 		String fName = ("hosts.csv");
 		File F = new File(fName);
 		Scanner S = new Scanner(F);
@@ -88,6 +89,7 @@ public class ImportFromExcel {
 			hostHome.add(new HostHome(nameL, numberTaking, alergies, gender));
 		}
 		S.close();
+		return hostHome;
 	}
 	
 	

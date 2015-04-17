@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 public class Hosts extends JPanel {
 	private static final long serialVersionUID = 1;
@@ -32,6 +33,8 @@ public class Hosts extends JPanel {
 	private ArrayList<JTextField> slots = new ArrayList<JTextField>();
 	
 	ImportFromExcel importInfo = new ImportFromExcel();
+	
+	JButton algorithmize = new JButton("Algorithmize!");
 	/**
 	 * Create the panel.
 	 */
@@ -97,7 +100,10 @@ public class Hosts extends JPanel {
 		
 		scrollPane.setBounds(0, 150, 1000, 350);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(6);
-		add(scrollPane);
+		add(scrollPane);		
+		
+		algorithmize.setBounds(475, 520, 100, 25);
+		allHosts.add(algorithmize);
 	}
 	
 	public void setNumOfHosts(int number) {
@@ -129,5 +135,9 @@ public class Hosts extends JPanel {
 	
 	public void populateHosts() throws FileNotFoundException {
 		importInfo.grabHosts(hostsInfo);
+	}
+	
+	public JButton getAlgorithmize() {
+		return algorithmize;
 	}
 }

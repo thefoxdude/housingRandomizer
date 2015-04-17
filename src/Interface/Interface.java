@@ -4,13 +4,16 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-//import Algorithm.Student;
-//import Algorithm.HostHome;
+
+import Algorithm.Student;
+import Algorithm.HostHome;
+import Algorithm.Algorithm;
 
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
@@ -23,11 +26,13 @@ public class Interface extends JFrame {
 	private Students students = new Students();
 	private Hosts hosts = new Hosts();
 	
-//	private HostHome hostHome = new HostHome();
-//	private Student student = new Student();
+	private ArrayList<Student> studentList = new ArrayList<Student>();
+	private ArrayList<HostHome> hostHomeList = new ArrayList<HostHome>();
+	private ImportFromExcel importFromExcel = new ImportFromExcel();
 	
 	private JButton enter = new JButton();
 	private JButton moveToHosts = new JButton();
+	private JButton algorithmize = new JButton();
 
 	/**
 	 * Launch the application.
@@ -84,6 +89,27 @@ public class Interface extends JFrame {
 					e.printStackTrace();
 				}
 				hosts.setNumOfHosts(numOfHosts);
+				home.setVisible(false);
+				students.setVisible(false);
+				hosts.setVisible(true);
+			}
+		});
+		
+		algorithmize = hosts.getAlgorithmize();
+		algorithmize.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+					studentList = importFromExcel.grabStudentList(studentList);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				try {
+					hostHomeList = importFromExcel.grabHostList(hostHomeList);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				Algorithm.sortStudents(studentList, hostHomeList);
 				home.setVisible(false);
 				students.setVisible(false);
 				hosts.setVisible(true);
