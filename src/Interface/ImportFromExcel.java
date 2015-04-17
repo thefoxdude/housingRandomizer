@@ -87,6 +87,7 @@ public class ImportFromExcel {
 			alergies = info[3];
 			hostHome.add(new HostHome(nameL, numberTaking, alergies, gender));
 		}
+		S.close();
 	}
 	
 	

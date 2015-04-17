@@ -95,7 +95,7 @@ public class Hosts extends JPanel {
 		allHosts.add(alergies);
 		allHosts.add(numberTaking);
 		
-		scrollPane.setBounds(0, 150, 1000, 450);
+		scrollPane.setBounds(0, 150, 1000, 350);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(6);
 		add(scrollPane);
 	}

@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import Algorithm.Student;
-import Algorithm.HostHome;
+//import Algorithm.Student;
+//import Algorithm.HostHome;
 
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
