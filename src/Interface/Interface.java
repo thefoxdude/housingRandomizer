@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import Algorithm.Student;
-import Algorithm.HostHome;
 
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
@@ -22,9 +20,6 @@ public class Interface extends JFrame {
 	private Home home = new Home();
 	private Students students = new Students();
 	private Hosts hosts = new Hosts();
-	
-	private HostHome hostHome = new HostHome();
-	private Student student = new Student();
 	
 	private JButton enter = new JButton();
 	private JButton moveToHosts = new JButton();
