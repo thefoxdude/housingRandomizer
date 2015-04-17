@@ -29,6 +29,7 @@ public class Algorithm {
 			{
 				studentScheduled = false;
 				
+				
 				while(!studentScheduled)
 				{
 					schedule = true;
@@ -42,8 +43,11 @@ public class Algorithm {
 					//Do not schedule if there is an incompatible person in the room already
 					for(Student otherStudent : currentHome.getStudentsTaking())
 					{
-						if(student.getUncompatible() != otherStudent.getUncompatible())
-							schedule = false;
+						if(student.getUncompatible() != ' ')
+						{
+							if(student.getUncompatible() != otherStudent.getUncompatible())
+								schedule = false;
+						}
 					}
 					
 					//Do not schedule if there is not an upper classman and it will fill the home
@@ -68,6 +72,14 @@ public class Algorithm {
 					}
 					
 					homeCount++;
+					
+					//If a student still has not been scheduled at the end of the list of homes,
+					//then they are sent to the list of unscheduled students
+					if(homeCount == hosts.size() && studentScheduled == false)
+					{
+						studentScheduled = true;
+						unscheduledStudents.add(student);
+					}
 				}
 			}
 			
