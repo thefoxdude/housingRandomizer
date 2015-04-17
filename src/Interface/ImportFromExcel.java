@@ -45,9 +45,9 @@ public class ImportFromExcel {
 			alergies = info[4];
 			try {
 				compatibility = info[5].charAt(0);
-//				student.add(new Student(nameF, nameL, years, gender, alergies, compatibility));
+				student.add(new Student(nameF, nameL, years, gender, alergies, compatibility));
 			} catch (Exception e) {
-//				student.add(new Student(nameF, nameL, years, gender, alergies));
+				student.add(new Student(nameF, nameL, years, gender, alergies));
 			}
 		}
 		S.close();

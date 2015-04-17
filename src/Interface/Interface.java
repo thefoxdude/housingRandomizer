@@ -23,8 +23,8 @@ public class Interface extends JFrame {
 	private Students students = new Students();
 	private Hosts hosts = new Hosts();
 	
-	private HostHome hostHome = new HostHome();
-	private Student student = new Student();
+//	private HostHome hostHome = new HostHome();
+//	private Student student = new Student();
 	
 	private JButton enter = new JButton();
 	private JButton moveToHosts = new JButton();
