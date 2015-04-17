@@ -85,7 +85,7 @@ public class ImportFromExcel {
 			gender = info[1].charAt(0);
 			numberTaking = Integer.parseInt(info[2]);
 			alergies = info[3];
-//			hostHome.add(new HostHome(nameL, numberTaking, gender, alergies));
+			hostHome.add(new HostHome(nameL, numberTaking, alergies, gender));
 		}
 	}
 	
