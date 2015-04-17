@@ -18,6 +18,25 @@ public class HostHome {
 		this.genderTaking = gender;
 		hasUpperClassman = false;
 		
+		switch(allergies.toUpperCase())
+		{
+		case "NO":
+			hasCats = false;
+			hasDogs = false;
+			break;
+		case "DOG":
+			hasCats = false;
+			hasDogs = true;
+			break;
+		case "CAT":
+			hasCats = true;
+			hasDogs = false;
+			break;
+		case "BOTH":
+			hasCats = true;
+			hasDogs = true;
+			break;
+		}
 	}
 	
 	public ArrayList<Student> getStudentsTaking() {

@@ -19,6 +19,25 @@ public class Student {
 		this.gender = gender;
 		this.uncompatible = uncompatible;
 		
+		switch(allergies.toUpperCase())
+		{
+		case "NO":
+			isAllergicToCats = false;
+			isAllergicToDogs = false;
+			break;
+		case "DOG":
+			isAllergicToCats = false;
+			isAllergicToDogs = true;
+			break;
+		case "CAT":
+			isAllergicToCats = true;
+			isAllergicToDogs = false;
+			break;
+		case "BOTH":
+			isAllergicToCats = true;
+			isAllergicToDogs = true;
+			break;
+		}
 	}
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
@@ -28,8 +47,27 @@ public class Student {
 		this.lastName = lastName;
 		this.yearsInChoir = yearsInChoir;
 		this.gender = gender;
+		this.uncompatible = ' ';
 		
-		
+		switch(allergies.toUpperCase())
+		{
+		case "NO":
+			isAllergicToCats = false;
+			isAllergicToDogs = false;
+			break;
+		case "DOG":
+			isAllergicToCats = false;
+			isAllergicToDogs = true;
+			break;
+		case "CAT":
+			isAllergicToCats = true;
+			isAllergicToDogs = false;
+			break;
+		case "BOTH":
+			isAllergicToCats = true;
+			isAllergicToDogs = true;
+			break;
+		}
 	}
 	
 	public String getFirstName() {
