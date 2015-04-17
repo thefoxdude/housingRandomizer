@@ -16,10 +16,14 @@ import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 
+import Algorithm.Student;
+
 public class Students extends JPanel {
 	private static final long serialVersionUID = 1;
 	
 	JPanel allStudents = new JPanel();
+	ArrayList<Student> student = new ArrayList<Student>();
+	
 	private JTextField firstName;
 	private JTextField lastName;
 	private JTextField gender;
@@ -33,7 +37,8 @@ public class Students extends JPanel {
 	
 	ImportFromExcel importInfo = new ImportFromExcel();
 	
-	JButton moveToHosts = new JButton("New button");
+	JButton moveToHosts = new JButton("Enter Hosts");
+	
 	/**
 	 * Create the panel.
 	 */
@@ -144,6 +149,7 @@ public class Students extends JPanel {
 	
 	public void populateStudents() throws FileNotFoundException {
 		importInfo.grabStudents(studentsInfo);
+		importInfo.grabStudent(student);
 	}
 	
 	public JButton getMoveToHosts() {
