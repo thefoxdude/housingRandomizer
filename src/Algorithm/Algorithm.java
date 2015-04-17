@@ -39,6 +39,13 @@ public class Algorithm {
 					if(currentHome.getStudentsTaking().size() == currentHome.getMaxStudents())
 						schedule = false;
 					
+					//Do not schedule if there is an incompatible person in the room already
+					for(Student otherStudent : currentHome.getStudentsTaking())
+					{
+						if(student.getUncompatible() != otherStudent.getUncompatible())
+							schedule = false;
+					}
+					
 					//Do not schedule if there is not an upper classman and it will fill the home
 					if(currentHome.getStudentsTaking().size() == currentHome.getMaxStudents() - 1 && 
 							!currentHome.isHasUpperClassman() && student.getYearsInChoir() == 1)

@@ -8,8 +8,17 @@ public class HostHome {
 	private int maxStudents;
 	private boolean hasCats;
 	private boolean hasDogs;
-	private String genderTaking;
+	private char genderTaking;
 	private boolean hasUpperClassman;
+	
+	public HostHome(String lastName, int maxStudents, String allergies, char gender)
+	{
+		studentsTaking = new ArrayList<Student>();
+		this.maxStudents = maxStudents;
+		this.genderTaking = gender;
+		hasUpperClassman = false;
+		
+	}
 	
 	public ArrayList<Student> getStudentsTaking() {
 		return studentsTaking;
@@ -43,11 +52,11 @@ public class HostHome {
 		this.hasDogs = hasDogs;
 	}
 
-	public String getGenderTaking() {
+	public char getGenderTaking() {
 		return genderTaking;
 	}
 
-	public void setGenderTaking(String genderTaking) {
+	public void setGenderTaking(char genderTaking) {
 		this.genderTaking = genderTaking;
 	};
 	

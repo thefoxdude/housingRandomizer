@@ -7,7 +7,30 @@ public class Student {
 	private int yearsInChoir;
 	private boolean isAllergicToCats;
 	private boolean isAllergicToDogs;
-	private String gender;
+	private char gender;
+	private char uncompatible;
+	
+	public Student(String firstName, String lastName, int yearsInChoir, 
+			char gender, String allergies, char uncompatible)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.yearsInChoir = yearsInChoir;
+		this.gender = gender;
+		this.uncompatible = uncompatible;
+		
+	}
+	
+	public Student(String firstName, String lastName, int yearsInChoir, 
+			char gender, String allergies)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.yearsInChoir = yearsInChoir;
+		this.gender = gender;
+		
+		
+	}
 	
 	public String getFirstName() {
 		return firstName;
@@ -49,11 +72,19 @@ public class Student {
 		this.isAllergicToDogs = isAllergicToDogs;
 	}
 	
-	public String getGender() {
+	public char getGender() {
 		return gender;
 	}
 	
-	public void setGender(String gender) {
+	public void setGender(char gender) {
 		this.gender = gender;
+	}
+
+	public char getUncompatible() {
+		return uncompatible;
+	}
+
+	public void setUncompatible(char uncompatible) {
+		this.uncompatible = uncompatible;
 	}
 }
