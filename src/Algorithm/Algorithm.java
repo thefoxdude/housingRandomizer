@@ -91,4 +91,22 @@ public class Algorithm {
 		//that could not be scheudled
 		return unscheduledStudents;
 	}
+	
+	//Right now just outputs the results to the console
+	public static void print(ArrayList<HostHome> hosts, ArrayList<Student> unscheduledStudents)
+	{
+		for(HostHome host : hosts)
+		{
+			System.out.println(host.getLastName());
+			for(Student student : host.getStudentsTaking())
+			{
+				System.out.println(student.getFirstName() + " " + student.getLastName());
+			}
+		}
+		System.out.println("\nStudents that were unable to be scheduled:");
+		for(Student student : unscheduledStudents)
+		{
+			System.out.println(student.getFirstName() + " " + student.getLastName());
+		}
+	}
 }
