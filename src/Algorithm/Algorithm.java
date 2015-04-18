@@ -20,20 +20,19 @@ public class Algorithm {
 		HostHome currentHome;
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
 		
-		for(int x = 0; x < 100; x++)
-		{
+//		for(int x = 0; x < 100; x++)
+//		{
 			//Randomizes the students for a different result each time
 			Collections.shuffle(students);
 			
 			for(Student student : students)
 			{
 				studentScheduled = false;
-				
+				homeCount = 0;
 				
 				while(!studentScheduled)
 				{
 					schedule = true;
-					homeCount = 0;
 					currentHome = hosts.get(homeCount);
 					
 					//Do not scheduled if the home is already full
@@ -56,9 +55,9 @@ public class Algorithm {
 						schedule = false;
 					
 					//Do not schedule if there is an allergy conflict
-					if(student.isAllergicToCats() == currentHome.isHasCats())
+					if(student.isAllergicToCats() && currentHome.isHasCats())
 						schedule = false;
-					if(student.isAllergicToDogs() == currentHome.isHasDogs())
+					if(student.isAllergicToDogs() && currentHome.isHasDogs())
 						schedule = false;
 					
 					
@@ -86,7 +85,7 @@ public class Algorithm {
 			//If the algorithm is done and there is an optimal schedule, return because we are done
 			if(unscheduledStudents.size() == 0)
 				return unscheduledStudents;
-		}
+//		}
 		//If the loop completes and cannot find a result after 100 attempts, then return the students
 		//that could not be scheudled
 		return unscheduledStudents;
@@ -98,10 +97,12 @@ public class Algorithm {
 		for(HostHome host : hosts)
 		{
 			System.out.println(host.getLastName());
+			
 			for(Student student : host.getStudentsTaking())
 			{
 				System.out.println(student.getFirstName() + " " + student.getLastName());
 			}
+			System.out.println("");
 		}
 		System.out.println("\nStudents that were unable to be scheduled:");
 		for(Student student : unscheduledStudents)
