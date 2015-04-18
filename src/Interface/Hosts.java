@@ -103,7 +103,7 @@ public class Hosts extends JPanel {
 		add(scrollPane);		
 		
 		algorithmize.setBounds(475, 520, 100, 25);
-		allHosts.add(algorithmize);
+		add(algorithmize);
 	}
 	
 	public void setNumOfHosts(int number) {
