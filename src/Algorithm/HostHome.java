@@ -17,6 +17,7 @@ public class HostHome {
 		this.maxStudents = maxStudents;
 		this.genderTaking = gender;
 		hasUpperClassman = false;
+		this.lastName = lastName;
 		
 		switch(allergies.toUpperCase())
 		{

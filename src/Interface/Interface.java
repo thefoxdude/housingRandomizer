@@ -112,7 +112,7 @@ public class Interface extends JFrame {
 				
 				//Added in a bit of code to take the output from the algorithm and print it 
 				//to the console to check if it works
-				ArrayList<Student> unscheduledStudents = Algorithm.sortStudents(studentList, hostHomeList);
+				ArrayList<Student> unscheduledStudents = Algorithm.scheduleUCO(studentList, hostHomeList);
 				Algorithm.print(hostHomeList, unscheduledStudents);
 				home.setVisible(false);
 				students.setVisible(false);
