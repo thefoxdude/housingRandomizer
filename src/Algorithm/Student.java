@@ -8,10 +8,10 @@ public class Student {
 	private boolean isAllergicToCats;
 	private boolean isAllergicToDogs;
 	private char gender;
-	private char uncompatible;
+	private String uncompatible;
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
-			char gender, String allergies, char uncompatible)
+			char gender, String allergies, String uncompatible)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -47,7 +47,7 @@ public class Student {
 		this.lastName = lastName;
 		this.yearsInChoir = yearsInChoir;
 		this.gender = gender;
-		this.uncompatible = ' ';
+		this.uncompatible = "";
 		
 		switch(allergies.toUpperCase())
 		{
@@ -118,11 +118,11 @@ public class Student {
 		this.gender = gender;
 	}
 
-	public char getUncompatible() {
+	public String getUncompatible() {
 		return uncompatible;
 	}
 
-	public void setUncompatible(char uncompatible) {
+	public void setUncompatible(String uncompatible) {
 		this.uncompatible = uncompatible;
 	}
 }

@@ -7,23 +7,26 @@ import java.util.Collections;
 //to homes as long as they set the list of criteria.
 public class Algorithm {
 	
-	//Sorts a given list of students into a list of host homes.  THe students are placed
-	//inside of the arraylist within each host home, so a return type is not needed as the 
-	//host homes are modified.
+	//Sorts a given list of students into a list of host homes.  The students are placed
+	//inside of the arraylist within each host home, so the arraylist that is returned is
+	//a list of all the students that are unabled to be scheduled.
 	
-	//Should think about a way to handle a student not being able to be scheduled into any home
-	public static ArrayList<Student> sortStudents(ArrayList<Student> students, ArrayList<HostHome> hosts)
+	public static ArrayList<Student> scheduleUCO(ArrayList<Student> students, ArrayList<HostHome> hosts)
 	{
 		boolean studentScheduled;
 		boolean schedule;
 		int homeCount;
 		HostHome currentHome;
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
-		
-//		for(int x = 0; x < 100; x++)
-//		{
+		int testCount = 0;
+
+		for(int x = 0; x < 100; x++)
+		{
 			//Randomizes the students for a different result each time
 			Collections.shuffle(students);
+			unscheduledStudents.clear();
+			for(HostHome home : hosts)
+				home.getStudentsTaking().clear();
 			
 			for(Student student : students)
 			{
@@ -42,10 +45,16 @@ public class Algorithm {
 					//Do not schedule if there is an incompatible person in the room already
 					for(Student otherStudent : currentHome.getStudentsTaking())
 					{
-						if(student.getUncompatible() != ' ')
+						if(student.getUncompatible().length() > 0 && otherStudent.getUncompatible().length() > 0)
 						{
-							if(student.getUncompatible() != otherStudent.getUncompatible())
-								schedule = false;
+							for(int i = 0; i < student.getUncompatible().length(); i++)
+							{
+								for(int j = 0; j < otherStudent.getUncompatible().length(); j++)
+								{
+									if(student.getUncompatible().charAt(i) == otherStudent.getUncompatible().charAt(j))
+										schedule = false;
+								}
+							}
 						}
 					}
 					
@@ -85,7 +94,7 @@ public class Algorithm {
 			//If the algorithm is done and there is an optimal schedule, return because we are done
 			if(unscheduledStudents.size() == 0)
 				return unscheduledStudents;
-//		}
+		}
 		//If the loop completes and cannot find a result after 100 attempts, then return the students
 		//that could not be scheudled
 		return unscheduledStudents;

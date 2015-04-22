@@ -32,8 +32,8 @@ public class ImportFromExcel {
 		Scanner S = new Scanner(F);
 		S.useDelimiter(",");
 		String info[], line;
-		String nameF, nameL, alergies;
-		char gender, compatibility;
+		String nameF, nameL, alergies, compatibility;
+		char gender;
 		int years;
 		while (S.hasNextLine()) {
 			line = S.nextLine();
@@ -44,7 +44,7 @@ public class ImportFromExcel {
 			years = Integer.parseInt(info[3]);
 			alergies = info[4];
 			try {
-				compatibility = info[5].charAt(0);
+				compatibility = info[5];
 				student.add(new Student(nameF, nameL, years, gender, alergies, compatibility));
 			} catch (Exception e) {
 				student.add(new Student(nameF, nameL, years, gender, alergies));
