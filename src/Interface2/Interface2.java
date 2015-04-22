@@ -2,7 +2,6 @@ package Interface2;
 
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -16,14 +15,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
-import com.sun.javafx.tk.Toolkit;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Interface extends JFrame {
+public class Interface2 extends JFrame {
 	private static final long serialVersionUID = 1;
 	
 	private JPanel holder;
@@ -38,7 +35,7 @@ public class Interface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Interface frame = new Interface();
+					Interface2 frame = new Interface2();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -50,7 +47,7 @@ public class Interface extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Interface() {
+	public Interface2() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100,100,460,460);
 		holder = new JPanel();
