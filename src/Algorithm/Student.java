@@ -86,6 +86,10 @@ public class Student {
 		this.lastName = lastName;
 	}
 	
+	public String getName() {
+		return this.lastName + "," + this.firstName;
+	}
+	
 	public int getYearsInChoir() {
 		return yearsInChoir;
 	}
