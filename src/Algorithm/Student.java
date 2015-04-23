@@ -5,67 +5,70 @@ public class Student {
 	private String firstName;
 	private String lastName;
 	private int yearsInChoir;
-	private boolean isAllergicToCats;
-	private boolean isAllergicToDogs;
+	private boolean isAlergicToCats;
+	private boolean isAlergicToDogs;
 	private char gender;
 	private String uncompatible;
+	private String alergies;
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
-			char gender, String allergies, String uncompatible)
+			char gender, String alergies, String uncompatible)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.yearsInChoir = yearsInChoir;
 		this.gender = gender;
+		this.alergies = alergies;
 		this.uncompatible = uncompatible;
 		
-		switch(allergies.toUpperCase())
+		switch(alergies.toUpperCase())
 		{
 		case "NO":
-			isAllergicToCats = false;
-			isAllergicToDogs = false;
+			isAlergicToCats = false;
+			isAlergicToDogs = false;
 			break;
 		case "DOG":
-			isAllergicToCats = false;
-			isAllergicToDogs = true;
+			isAlergicToCats = false;
+			isAlergicToDogs = true;
 			break;
 		case "CAT":
-			isAllergicToCats = true;
-			isAllergicToDogs = false;
+			isAlergicToCats = true;
+			isAlergicToDogs = false;
 			break;
 		case "BOTH":
-			isAllergicToCats = true;
-			isAllergicToDogs = true;
+			isAlergicToCats = true;
+			isAlergicToDogs = true;
 			break;
 		}
 	}
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
-			char gender, String allergies)
+			char gender, String alergies)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.yearsInChoir = yearsInChoir;
 		this.gender = gender;
 		this.uncompatible = "";
+		this.alergies = alergies;
 		
-		switch(allergies.toUpperCase())
+		switch(alergies.toUpperCase())
 		{
 		case "NO":
-			isAllergicToCats = false;
-			isAllergicToDogs = false;
+			isAlergicToCats = false;
+			isAlergicToDogs = false;
 			break;
 		case "DOG":
-			isAllergicToCats = false;
-			isAllergicToDogs = true;
+			isAlergicToCats = false;
+			isAlergicToDogs = true;
 			break;
 		case "CAT":
-			isAllergicToCats = true;
-			isAllergicToDogs = false;
+			isAlergicToCats = true;
+			isAlergicToDogs = false;
 			break;
 		case "BOTH":
-			isAllergicToCats = true;
-			isAllergicToDogs = true;
+			isAlergicToCats = true;
+			isAlergicToDogs = true;
 			break;
 		}
 	}
@@ -98,20 +101,28 @@ public class Student {
 		this.yearsInChoir = yearsInChoir;
 	}
 	
-	public boolean isAllergicToCats() {
-		return isAllergicToCats;
+	public boolean isAlergicToCats() {
+		return isAlergicToCats;
 	}
 	
-	public void setAllergicToCats(boolean isAllergicToCats) {
-		this.isAllergicToCats = isAllergicToCats;
+	public void setAlergicToCats(boolean isAlergicToCats) {
+		this.isAlergicToCats = isAlergicToCats;
 	}
 	
-	public boolean isAllergicToDogs() {
-		return isAllergicToDogs;
+	public boolean isAlergicToDogs() {
+		return isAlergicToDogs;
 	}
 	
-	public void setAllergicToDogs(boolean isAllergicToDogs) {
-		this.isAllergicToDogs = isAllergicToDogs;
+	public void setAlergicToDogs(boolean isAlergicToDogs) {
+		this.isAlergicToDogs = isAlergicToDogs;
+	}
+	
+	public void setAlergies(String alergies) {
+		this.alergies = alergies;
+	}
+	
+	public String getAlergies() {
+		return alergies;
 	}
 	
 	public char getGender() {
