@@ -186,8 +186,9 @@ public class Interface2 extends JFrame {
 		algorithmButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				studentFilePath = studentLocation.getText();
-				hostFilePath = hostLocation.getText();
+				studentFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\students.csv";
+				hostFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\hosts.csv";
+				groupName = groupHolder.getText();
 				importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
 			}
 		});

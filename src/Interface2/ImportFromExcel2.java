@@ -99,30 +99,40 @@ public class ImportFromExcel2 {
 			writer.append("Scheduled Students");
 			writer.append('\n');
 			writer.append("Host Family Name");
+			writer.append(' ');
+			writer.append("Student Names");
+			writer.append('\n');
 			for (HostHome currentHome : hostHomeList) {
 				writer.append(currentHome.getLastName());
-				writer.append('\n');
-				writer.append("Student Names");
+				writer.append(' ');
 				for (Student currentStudent : currentHome.getStudentsTaking()) {
 					writer.append(currentStudent.getName());
+					writer.append(",");
 				}
 				writer.append('\n');
-				
-				writer.flush();
-				writer.close();
 			}
+			writer.flush();
+			writer.close();
+			
 			FileWriter writer2 = new FileWriter("UnscheduledStudents.csv");
 			writer2.append("First Name");
+			writer2.append(",");
 			writer2.append("Last Name");
-			writer2.append("Years in Choir");
+			writer2.append(",");
 			writer2.append("Gender");
+			writer2.append(",");
+			writer2.append("Years in Choir");
+			writer2.append(",");
 			writer2.append("Alergies");
 			writer2.append('\n');
 			for (Student currentStudent : unscheduledStudents) {
 				writer2.append(currentStudent.getFirstName());
 				writer2.append(currentStudent.getLastName());
+				writer2.append(",");
 				writer2.append(Integer.toString(currentStudent.getYearsInChoir()));
+				writer2.append(",");
 				writer2.append(currentStudent.getGender());
+				writer2.append(",");
 				writer2.append(currentStudent.getAlergies());
 				writer2.append('\n');
 			}
