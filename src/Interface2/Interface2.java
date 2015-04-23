@@ -17,6 +17,8 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,17 +37,14 @@ public class Interface2 extends JFrame {
 	private JPanel holder;
 	private JTextField studentLocation;
 	private JTextField hostLocation;
-	
+	private JComboBox<String> groupHolder;
+	String groupName;
+
 	PrintWriter fileWriter;
-	FileReader excelFileLocationReader;
-	File fileLocation;
 	Scanner myReader;
 	String studentFilePath;
 	String hostFilePath;
-	String startingDir;
-	String groupName;
 	JFileChooser myChooser;
-	private JComboBox<String> groupHolder;
 	
 	private ImportFromExcel2 importCall = new ImportFromExcel2();
 	
@@ -69,27 +68,38 @@ public class Interface2 extends JFrame {
 	 * Create the frame.
 	 */
 	public Interface2() {
+		//Start by reading the file names that are listed in the file.  If there are no files (it is the first time using the system)
+		//the locations are defaulted to empty strings.
 		try {
-			fileWriter = new PrintWriter(new FileWriter("ExcelFileLocations.txt"));
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-		try {
-			excelFileLocationReader = new FileReader("C:\\Users\\Jake\\git\\housingRandomizer\\ExcelFileLocations.txt");
-		} catch (FileNotFoundException e2) {
-			e2.printStackTrace();
-		}
-		fileLocation = new File("C:\\Users\\Jake\\git\\housingRandomizer\\ExcelFileLocations.txt");
-		try {
-			myReader = new Scanner(fileLocation);
+			myReader = new Scanner(new File("ExcelFileLocations.txt"));
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		studentFilePath = myReader.nextLine();                              
-		hostFilePath = "";
-		startingDir = "";
+		if(myReader.hasNextLine())
+			studentFilePath = myReader.nextLine();
+		else studentFilePath = "";
+		if(myReader.hasNextLine())
+			hostFilePath = myReader.nextLine();
+		else hostFilePath = "";
+		
+		//Clears the file and opens up the file for writing
+		try {
+			fileWriter = new PrintWriter(new FileWriter("ExcelFileLocations.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		myChooser = new JFileChooser();
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				fileWriter.println(studentFilePath);
+				fileWriter.println(hostFilePath);
+				fileWriter.close();
+			}
+		});
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150,100,460,500);
@@ -147,15 +157,14 @@ public class Interface2 extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 
 					//Read in the file name.  Open the explorer to that path, or open the
-					//c drive if it does not find one.
-					if(myReader.nextLine() == null)	
+					//user folder if it does not find one.
+					if(studentFilePath.equals(""))	
 						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-					else myChooser.setCurrentDirectory(new File(System.getProperty(studentFilePath)));
+					else myChooser.setCurrentDirectory(new File(studentFilePath));
 					int result = myChooser.showOpenDialog(studentBrowse);
 					if (result == JFileChooser.APPROVE_OPTION)
 						studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
 					studentLocation.setText(studentFilePath);
-					fileWriter.println(studentFilePath);
 			}
 		});
 		studentBrowse.setBounds(308, 185, 89, 23);
@@ -167,16 +176,14 @@ public class Interface2 extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 					//Read in the file name.  Open the explorer to that path, or open the
-					//c drive if it does not find one.
-					hostFilePath = myReader.nextLine( );        
-					if(myReader.nextLine( ) == null)	
+					//user folder if it does not find one.
+					if(hostFilePath.equals(""))	
 						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-					else myChooser.setCurrentDirectory(new File(System.getProperty(hostFilePath)));
+					else myChooser.setCurrentDirectory(new File(hostFilePath));
 					int result = myChooser.showOpenDialog(hostBrowse);
 					if (result == JFileChooser.APPROVE_OPTION)
 						hostFilePath = myChooser.getSelectedFile().getAbsolutePath();
 					hostLocation.setText(hostFilePath);
-					fileWriter.println(hostFilePath);
 
 			}
 		});
@@ -202,10 +209,13 @@ public class Interface2 extends JFrame {
 		algorithmButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				studentFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\students.csv";
-				hostFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\hosts.csv";
+				studentFilePath = studentLocation.getText();
+				hostFilePath = hostLocation.getText();
 				groupName = (String) groupHolder.getSelectedItem();
 				importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
+				fileWriter.println(studentFilePath);
+				fileWriter.println(hostFilePath);
+				fileWriter.close();
 			}
 		});
 		algorithmButton.setBounds(154, 404, 160, 23);
