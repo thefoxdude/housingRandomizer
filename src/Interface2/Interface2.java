@@ -23,6 +23,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
 public class Interface2 extends JFrame {
 	private static final long serialVersionUID = 1;
 	
@@ -37,7 +40,7 @@ public class Interface2 extends JFrame {
 	String hostFilePath;
 	String groupName;
 	JFileChooser myChooser;
-	private JTextField groupHolder;
+	private JComboBox<String> groupHolder;
 	
 	private ImportFromExcel2 importCall = new ImportFromExcel2();
 	
@@ -173,8 +176,8 @@ public class Interface2 extends JFrame {
 		groupLabel.setBounds(98, 294, 200, 18);
 		holder.add(groupLabel);
 		
-		groupHolder = new JTextField();
-		groupHolder.setColumns(10);
+		groupHolder = new JComboBox<String>();
+		groupHolder.setModel(new DefaultComboBoxModel<String>(new String[] {"", "UCO", "Women's Choir", "New Song", "Male Choral"}));
 		groupHolder.setBounds(98, 323, 200, 20);
 		holder.add(groupHolder);
 		
@@ -188,7 +191,7 @@ public class Interface2 extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				studentFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\students.csv";
 				hostFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\hosts.csv";
-				groupName = groupHolder.getText();
+				groupName = (String) groupHolder.getSelectedItem();
 				importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
 			}
 		});
