@@ -13,6 +13,9 @@ import Algorithm.Student;
 
 public class ImportFromExcel2 {
 	
+	ArrayList<Student> studentList = new ArrayList<Student>();
+	ArrayList<HostHome> hostHomeList = new ArrayList<HostHome>();
+	
 	// grab all the students
 	public ArrayList<Student> grabStudentList(ArrayList<Student> student, String fileName) throws FileNotFoundException {
 		File F = new File(fileName);
@@ -63,21 +66,21 @@ public class ImportFromExcel2 {
 		return hostHome;
 	}
 	
-	public void runAlgorithm(String group, ArrayList<Student> studentList, ArrayList<HostHome> hostHomeList, String studentLocation, String hostLocation) {
+	public void runAlgorithm(String group, String studentLocation, String hostLocation) {
 		try {
-			studentList = grabStudentList(studentList, studentLocation);
+			this.studentList = grabStudentList(studentList, studentLocation);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
-			hostHomeList = grabHostList(hostHomeList, hostLocation);
+			this.hostHomeList = grabHostList(hostHomeList, hostLocation);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
 		if (group.equals("UCO")) {
-			unscheduledStudents = Algorithm.scheduleUCO(studentList, hostHomeList);
-			printOutput(hostHomeList, unscheduledStudents);
+			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
+			printOutput(this.hostHomeList, unscheduledStudents);
 		}
 		if (group.equals("Women's Choir")) {
 			
@@ -96,30 +99,40 @@ public class ImportFromExcel2 {
 			writer.append("Scheduled Students");
 			writer.append('\n');
 			writer.append("Host Family Name");
+			writer.append(' ');
+			writer.append("Student Names");
+			writer.append('\n');
 			for (HostHome currentHome : hostHomeList) {
 				writer.append(currentHome.getLastName());
-				writer.append('\n');
-				writer.append("Student Names");
+				writer.append(' ');
 				for (Student currentStudent : currentHome.getStudentsTaking()) {
 					writer.append(currentStudent.getName());
+					writer.append(",");
 				}
 				writer.append('\n');
-				
-				writer.flush();
-				writer.close();
 			}
+			writer.flush();
+			writer.close();
+			
 			FileWriter writer2 = new FileWriter("UnscheduledStudents.csv");
 			writer2.append("First Name");
+			writer2.append(",");
 			writer2.append("Last Name");
-			writer2.append("Years in Choir");
+			writer2.append(",");
 			writer2.append("Gender");
+			writer2.append(",");
+			writer2.append("Years in Choir");
+			writer2.append(",");
 			writer2.append("Alergies");
 			writer2.append('\n');
 			for (Student currentStudent : unscheduledStudents) {
 				writer2.append(currentStudent.getFirstName());
 				writer2.append(currentStudent.getLastName());
+				writer2.append(",");
 				writer2.append(Integer.toString(currentStudent.getYearsInChoir()));
+				writer2.append(",");
 				writer2.append(currentStudent.getGender());
+				writer2.append(",");
 				writer2.append(currentStudent.getAlergies());
 				writer2.append('\n');
 			}
