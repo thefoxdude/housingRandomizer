@@ -18,10 +18,13 @@ import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class Interface2 extends JFrame {
 	private static final long serialVersionUID = 1;
@@ -32,9 +35,11 @@ public class Interface2 extends JFrame {
 	
 	PrintWriter fileWriter;
 	FileReader excelFileLocationReader;
-	BufferedReader myReader;
+	File fileLocation;
+	Scanner myReader;
 	String studentFilePath;
 	String hostFilePath;
+	String startingDir;
 	JFileChooser myChooser;
 	
 	/**
@@ -58,18 +63,26 @@ public class Interface2 extends JFrame {
 	 */
 	public Interface2() {
 		try {
-			fileWriter = new PrintWriter("ExcelFileLocations.txt");
-		} catch (FileNotFoundException e2) {
+			fileWriter = new PrintWriter(new FileWriter("ExcelFileLocations.txt"));
+		} catch (IOException e2) {
 			e2.printStackTrace();
 		}
 		try {
-			excelFileLocationReader = new FileReader("ExcelFileLocations.txt");
+			excelFileLocationReader = new FileReader("C:\\Users\\Jake\\git\\housingRandomizer\\ExcelFileLocations.txt");
 		} catch (FileNotFoundException e2) {
 			e2.printStackTrace();
 		}
-		myReader = new BufferedReader(excelFileLocationReader);
-		studentFilePath = "";
+		fileLocation = new File("C:\\Users\\Jake\\git\\housingRandomizer\\ExcelFileLocations.txt");
+		try {
+			myReader = new Scanner(fileLocation);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		studentFilePath = myReader.nextLine();                              
 		hostFilePath = "";
+		startingDir = "";
+		myChooser = new JFileChooser();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100,100,460,460);
@@ -113,29 +126,29 @@ public class Interface2 extends JFrame {
 		studentLocation.setBounds(98, 215, 200, 20);
 		holder.add(studentLocation);
 		studentLocation.setColumns(10);
+		studentLocation.setText(studentFilePath);
 		
 		hostLocation = new JTextField();
 		hostLocation.setColumns(10);
 		hostLocation.setBounds(98, 320, 200, 20);
 		holder.add(hostLocation);
+		hostLocation.setText(hostFilePath);
 		
 		JButton studentBrowse = new JButton("Browse...");
 		studentBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				try {
+
 					//Read in the file name.  Open the explorer to that path, or open the
 					//c drive if it does not find one.
-					studentFilePath = myReader.readLine( );                                     
-					if(myReader.readLine( ) == null)	
-						myChooser = new JFileChooser("c:\\");
-					else myChooser = new JFileChooser(studentFilePath);
-					myChooser.showOpenDialog(studentBrowse);
-					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
-					fileWriter.write(studentFilePath);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+					if(myReader.nextLine() == null)	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(System.getProperty(studentFilePath)));
+					int result = myChooser.showOpenDialog(studentBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					studentLocation.setText(studentFilePath);
+					fileWriter.println(studentFilePath);
 			}
 		});
 		studentBrowse.setBounds(308, 214, 89, 23);
@@ -145,19 +158,19 @@ public class Interface2 extends JFrame {
 		hostBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
+
 					//Read in the file name.  Open the explorer to that path, or open the
 					//c drive if it does not find one.
-					hostFilePath = myReader.readLine( );                                     
-					if(myReader.readLine( ) == null)	
-						myChooser = new JFileChooser("c:\\");
-					else myChooser = new JFileChooser(hostFilePath);
-					myChooser.showOpenDialog(hostBrowse);
-					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					hostFilePath = myReader.nextLine( );        
+					if(myReader.nextLine( ) == null)	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(System.getProperty(hostFilePath)));
+					int result = myChooser.showOpenDialog(hostBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						hostFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					hostLocation.setText(hostFilePath);
+					fileWriter.println(hostFilePath);
 
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
 			}
 		});
 		hostBrowse.setBounds(308, 319, 89, 23);
