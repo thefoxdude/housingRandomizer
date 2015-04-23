@@ -35,7 +35,11 @@ public class Interface2 extends JFrame {
 	BufferedReader myReader;
 	String studentFilePath;
 	String hostFilePath;
+	String groupName;
 	JFileChooser myChooser;
+	private JTextField groupHolder;
+	
+	private ImportFromExcel2 importCall = new ImportFromExcel2();
 	
 	/**
 	 * Launch the application.
@@ -72,7 +76,7 @@ public class Interface2 extends JFrame {
 		hostFilePath = "";
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100,100,460,460);
+		setBounds(150,100,460,500);
 		holder = new JPanel();
 		holder.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(holder);
@@ -100,23 +104,23 @@ public class Interface2 extends JFrame {
 		JLabel studentLabel = new JLabel("File Location For Student");
 		studentLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		studentLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		studentLabel.setBounds(98, 178, 200, 14);
+		studentLabel.setBounds(98, 161, 200, 14);
 		holder.add(studentLabel);
 		
 		JLabel hostLabel = new JLabel("File Location For Hosts");
 		hostLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		hostLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		hostLabel.setBounds(98, 295, 200, 14);
+		hostLabel.setBounds(98, 230, 200, 14);
 		holder.add(hostLabel);
 		
 		studentLocation = new JTextField();
-		studentLocation.setBounds(98, 215, 200, 20);
+		studentLocation.setBounds(98, 186, 200, 20);
 		holder.add(studentLocation);
 		studentLocation.setColumns(10);
 		
 		hostLocation = new JTextField();
 		hostLocation.setColumns(10);
-		hostLocation.setBounds(98, 320, 200, 20);
+		hostLocation.setBounds(98, 255, 200, 20);
 		holder.add(hostLocation);
 		
 		JButton studentBrowse = new JButton("Browse...");
@@ -138,7 +142,7 @@ public class Interface2 extends JFrame {
 				}
 			}
 		});
-		studentBrowse.setBounds(308, 214, 89, 23);
+		studentBrowse.setBounds(308, 185, 89, 23);
 		holder.add(studentBrowse);
 		
 		JButton hostBrowse = new JButton("Browse...");
@@ -160,7 +164,34 @@ public class Interface2 extends JFrame {
 				}
 			}
 		});
-		hostBrowse.setBounds(308, 319, 89, 23);
+		hostBrowse.setBounds(308, 254, 89, 23);
 		holder.add(hostBrowse);
+		
+		JLabel groupLabel = new JLabel("Group Name");
+		groupLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		groupLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		groupLabel.setBounds(98, 294, 200, 18);
+		holder.add(groupLabel);
+		
+		groupHolder = new JTextField();
+		groupHolder.setColumns(10);
+		groupHolder.setBounds(98, 323, 200, 20);
+		holder.add(groupHolder);
+		
+		JButton groupBrowse = new JButton("Browse...");
+		groupBrowse.setBounds(308, 322, 89, 23);
+		holder.add(groupBrowse);
+		
+		JButton algorithmButton = new JButton("Create Groups");
+		algorithmButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				studentFilePath = studentLocation.getText();
+				hostFilePath = hostLocation.getText();
+				importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
+			}
+		});
+		algorithmButton.setBounds(154, 404, 160, 23);
+		holder.add(algorithmButton);
 	}
 }

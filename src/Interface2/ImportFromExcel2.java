@@ -13,6 +13,9 @@ import Algorithm.Student;
 
 public class ImportFromExcel2 {
 	
+	ArrayList<Student> studentList = new ArrayList<Student>();
+	ArrayList<HostHome> hostHomeList = new ArrayList<HostHome>();
+	
 	// grab all the students
 	public ArrayList<Student> grabStudentList(ArrayList<Student> student, String fileName) throws FileNotFoundException {
 		File F = new File(fileName);
@@ -63,21 +66,21 @@ public class ImportFromExcel2 {
 		return hostHome;
 	}
 	
-	public void runAlgorithm(String group, ArrayList<Student> studentList, ArrayList<HostHome> hostHomeList, String studentLocation, String hostLocation) {
+	public void runAlgorithm(String group, String studentLocation, String hostLocation) {
 		try {
-			studentList = grabStudentList(studentList, studentLocation);
+			this.studentList = grabStudentList(studentList, studentLocation);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
-			hostHomeList = grabHostList(hostHomeList, hostLocation);
+			this.hostHomeList = grabHostList(hostHomeList, hostLocation);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
 		if (group.equals("UCO")) {
-			unscheduledStudents = Algorithm.scheduleUCO(studentList, hostHomeList);
-			printOutput(hostHomeList, unscheduledStudents);
+			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
+			printOutput(this.hostHomeList, unscheduledStudents);
 		}
 		if (group.equals("Women's Choir")) {
 			
