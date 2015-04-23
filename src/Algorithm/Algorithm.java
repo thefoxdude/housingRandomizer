@@ -64,9 +64,9 @@ public class Algorithm {
 						schedule = false;
 					
 					//Do not schedule if there is an allergy conflict
-					if(student.isAllergicToCats() && currentHome.isHasCats())
+					if(student.isAlergicToCats() && currentHome.isHasCats())
 						schedule = false;
-					if(student.isAllergicToDogs() && currentHome.isHasDogs())
+					if(student.isAlergicToDogs() && currentHome.isHasDogs())
 						schedule = false;
 					
 					
