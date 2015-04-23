@@ -90,7 +90,7 @@ public class Student {
 	}
 	
 	public String getName() {
-		return this.lastName + "," + this.firstName;
+		return this.firstName + " " + this.lastName;
 	}
 	
 	public int getYearsInChoir() {

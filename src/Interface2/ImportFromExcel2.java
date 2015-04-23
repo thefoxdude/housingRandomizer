@@ -1,11 +1,21 @@
 package Interface2;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import org.apache.poi.*;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import Algorithm.Algorithm;
 import Algorithm.HostHome;
@@ -80,7 +90,7 @@ public class ImportFromExcel2 {
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
 		if (group.equals("UCO")) {
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
-			printOutput(this.hostHomeList, unscheduledStudents);
+			printOutputCSV(this.hostHomeList, unscheduledStudents);
 		}
 		if (group.equals("Women's Choir")) {
 			
@@ -93,18 +103,22 @@ public class ImportFromExcel2 {
 		}
 	}
 	
-	public void printOutput(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
+	public void printOutputCSV(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
 		try {
+			
 			FileWriter writer = new FileWriter("Output.csv");
+			
 			writer.append("Scheduled Students");
 			writer.append('\n');
 			writer.append("Host Family Name");
-			writer.append(' ');
+			writer.append(',');
+			writer.append(',');
 			writer.append("Student Names");
 			writer.append('\n');
 			for (HostHome currentHome : hostHomeList) {
 				writer.append(currentHome.getLastName());
-				writer.append(' ');
+				writer.append(',');
+				writer.append(',');
 				for (Student currentStudent : currentHome.getStudentsTaking()) {
 					writer.append(currentStudent.getName());
 					writer.append(",");
@@ -141,5 +155,36 @@ public class ImportFromExcel2 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void printOutputExcel(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
+		try {
+			FileInputStream output = new FileInputStream(new File("Output.xlsx"));
+			HSSFWorkbook outputWorkbook = new HSSFWorkbook(output);
+			HSSFSheet outputSheet = outputWorkbook.getSheetAt(0);
+			
+			HSSFCellStyle label = outputWorkbook.createCellStyle();
+			label.setBorderBottom(HSSFCellStyle.BORDER_THICK);
+			label.setBorderTop(HSSFCellStyle.BORDER_THICK);
+			label.setBorderRight(HSSFCellStyle.BORDER_THICK);
+			label.setBorderLeft(HSSFCellStyle.BORDER_THICK);
+			
+			Cell currentCell = null;
+			int currentRow = 0;
+			int currentCol = 0;
+			currentCell = outputSheet.getRow(currentRow).getCell(currentCol);
+			currentCell.setCellValue("Host Home");
+			currentCol += 2;
+			currentCell.setCellValue("Students");
+			
+			for (HostHome currentHost : hostHomeList) {
+				currentCell = 
+			}
+			
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 }
