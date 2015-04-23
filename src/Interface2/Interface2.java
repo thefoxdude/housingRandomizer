@@ -7,6 +7,7 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,8 +18,13 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Interface2 extends JFrame {
 	private static final long serialVersionUID = 1;
@@ -27,7 +33,13 @@ public class Interface2 extends JFrame {
 	private JTextField studentLocation;
 	private JTextField hostLocation;
 	
-
+	PrintWriter fileWriter;
+	FileReader excelFileLocationReader;
+	BufferedReader myReader;
+	String studentFilePath;
+	String hostFilePath;
+	JFileChooser myChooser;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -48,6 +60,20 @@ public class Interface2 extends JFrame {
 	 * Create the frame.
 	 */
 	public Interface2() {
+		try {
+			fileWriter = new PrintWriter("ExcelFileLocations.txt");
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		}
+		try {
+			excelFileLocationReader = new FileReader("ExcelFileLocations.txt");
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
+		}
+		myReader = new BufferedReader(excelFileLocationReader);
+		studentFilePath = "";
+		hostFilePath = "";
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100,100,460,460);
 		holder = new JPanel();
@@ -101,7 +127,15 @@ public class Interface2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try {
-					Desktop.getDesktop().open(new File("c:\\"));
+					//Read in the file name.  Open the explorer to that path, or open the
+					//c drive if it does not find one.
+					studentFilePath = myReader.readLine( );                                     
+					if(myReader.readLine( ) == null)	
+						myChooser = new JFileChooser("c:\\");
+					else myChooser = new JFileChooser(studentFilePath);
+					myChooser.showOpenDialog(studentBrowse);
+					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					fileWriter.write(studentFilePath);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -115,7 +149,15 @@ public class Interface2 extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					Desktop.getDesktop().open(new File("c:\\"));
+					//Read in the file name.  Open the explorer to that path, or open the
+					//c drive if it does not find one.
+					hostFilePath = myReader.readLine( );                                     
+					if(myReader.readLine( ) == null)	
+						myChooser = new JFileChooser("c:\\");
+					else myChooser = new JFileChooser(hostFilePath);
+					myChooser.showOpenDialog(hostBrowse);
+					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
