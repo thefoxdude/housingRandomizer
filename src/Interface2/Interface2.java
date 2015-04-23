@@ -17,11 +17,16 @@ import javax.swing.JButton;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -32,15 +37,14 @@ public class Interface2 extends JFrame {
 	private JPanel holder;
 	private JTextField studentLocation;
 	private JTextField hostLocation;
-	
+	private JComboBox<String> groupHolder;
+	String groupName;
+
 	PrintWriter fileWriter;
-	FileReader excelFileLocationReader;
-	BufferedReader myReader;
+	Scanner myReader;
 	String studentFilePath;
 	String hostFilePath;
-	String groupName;
 	JFileChooser myChooser;
-	private JComboBox<String> groupHolder;
 	
 	private ImportFromExcel2 importCall = new ImportFromExcel2();
 	
@@ -64,19 +68,38 @@ public class Interface2 extends JFrame {
 	 * Create the frame.
 	 */
 	public Interface2() {
+		//Start by reading the file names that are listed in the file.  If there are no files (it is the first time using the system)
+		//the locations are defaulted to empty strings.
 		try {
-			fileWriter = new PrintWriter("ExcelFileLocations.txt");
-		} catch (FileNotFoundException e2) {
-			e2.printStackTrace();
+			myReader = new Scanner(new File("ExcelFileLocations.txt"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		if(myReader.hasNextLine())
+			studentFilePath = myReader.nextLine();
+		else studentFilePath = "";
+		if(myReader.hasNextLine())
+			hostFilePath = myReader.nextLine();
+		else hostFilePath = "";
+		
+		//Clears the file and opens up the file for writing
 		try {
-			excelFileLocationReader = new FileReader("ExcelFileLocations.txt");
-		} catch (FileNotFoundException e2) {
-			e2.printStackTrace();
+			fileWriter = new PrintWriter(new FileWriter("ExcelFileLocations.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		myReader = new BufferedReader(excelFileLocationReader);
-		studentFilePath = "";
-		hostFilePath = "";
+		
+		myChooser = new JFileChooser();
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				fileWriter.println(studentFilePath);
+				fileWriter.println(hostFilePath);
+				fileWriter.close();
+			}
+		});
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150,100,460,500);
@@ -120,29 +143,28 @@ public class Interface2 extends JFrame {
 		studentLocation.setBounds(98, 186, 200, 20);
 		holder.add(studentLocation);
 		studentLocation.setColumns(10);
+		studentLocation.setText(studentFilePath);
 		
 		hostLocation = new JTextField();
 		hostLocation.setColumns(10);
 		hostLocation.setBounds(98, 255, 200, 20);
 		holder.add(hostLocation);
+		hostLocation.setText(hostFilePath);
 		
 		JButton studentBrowse = new JButton("Browse...");
 		studentBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				try {
+
 					//Read in the file name.  Open the explorer to that path, or open the
-					//c drive if it does not find one.
-					studentFilePath = myReader.readLine( );                                     
-					if(myReader.readLine( ) == null)	
-						myChooser = new JFileChooser("c:\\");
-					else myChooser = new JFileChooser(studentFilePath);
-					myChooser.showOpenDialog(studentBrowse);
-					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
-					fileWriter.write(studentFilePath);
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+					//user folder if it does not find one.
+					if(studentFilePath.equals(""))	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(studentFilePath));
+					int result = myChooser.showOpenDialog(studentBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					studentLocation.setText(studentFilePath);
 			}
 		});
 		studentBrowse.setBounds(308, 185, 89, 23);
@@ -152,19 +174,17 @@ public class Interface2 extends JFrame {
 		hostBrowse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					//Read in the file name.  Open the explorer to that path, or open the
-					//c drive if it does not find one.
-					hostFilePath = myReader.readLine( );                                     
-					if(myReader.readLine( ) == null)	
-						myChooser = new JFileChooser("c:\\");
-					else myChooser = new JFileChooser(hostFilePath);
-					myChooser.showOpenDialog(hostBrowse);
-					studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
 
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+					//Read in the file name.  Open the explorer to that path, or open the
+					//user folder if it does not find one.
+					if(hostFilePath.equals(""))	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(hostFilePath));
+					int result = myChooser.showOpenDialog(hostBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						hostFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					hostLocation.setText(hostFilePath);
+
 			}
 		});
 		hostBrowse.setBounds(308, 254, 89, 23);
@@ -189,10 +209,13 @@ public class Interface2 extends JFrame {
 		algorithmButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				studentFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\students.csv";
-				hostFilePath = "C:\\Users\\Daniel\\workspace\\HousingRandomizer\\hosts.csv";
+				studentFilePath = studentLocation.getText();
+				hostFilePath = hostLocation.getText();
 				groupName = (String) groupHolder.getSelectedItem();
 				importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
+				fileWriter.println(studentFilePath);
+				fileWriter.println(hostFilePath);
+				fileWriter.close();
 			}
 		});
 		algorithmButton.setBounds(154, 404, 160, 23);
