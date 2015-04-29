@@ -91,9 +91,15 @@ public class Algorithm {
 				}
 			}
 			
-			//If the algorithm is done and there is an optimal schedule, return because we are done
-			if(unscheduledStudents.size() == 0)
-				return unscheduledStudents;
+			//If the algorithm is done, there is an optimal schedule, and each host home has at least 2 people, return because we are done
+			boolean housesHave2 = true;
+			for(HostHome home : hosts)
+			{
+				if(home.getStudentsTaking().size() == 1)
+					housesHave2 = false;
+			}
+				if(unscheduledStudents.size() == 0 & housesHave2)
+					return unscheduledStudents;
 		}
 		//If the loop completes and cannot find a result after 100 attempts, then return the students
 		//that could not be scheudled

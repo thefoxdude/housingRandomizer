@@ -177,9 +177,9 @@ public class ImportFromExcel2 {
 			currentCol += 2;
 			currentCell.setCellValue("Students");
 			
-			for (HostHome currentHost : hostHomeList) {
-				currentCell = 
-			}
+//			for (HostHome currentHost : hostHomeList) {
+//				currentCell = 
+//			}
 			
 			
 			
