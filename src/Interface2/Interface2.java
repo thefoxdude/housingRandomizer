@@ -1,6 +1,7 @@
 package Interface2;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -103,6 +104,14 @@ public class Interface2 extends JFrame {
 		}
 		
 		myChooser = new JFileChooser();
+		
+		//Test code used to open up files
+		try {
+			Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\students.csv"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		this.addWindowListener(new WindowAdapter() {
 			@Override

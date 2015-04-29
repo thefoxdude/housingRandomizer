@@ -9,10 +9,10 @@ public class Student {
 	private boolean isAlergicToDogs;
 	private char gender;
 	private String uncompatible;
-	private String alergies;
+	private char alergies;
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
-			char gender, String alergies, String uncompatible)
+			char gender, char alergies, String uncompatible)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -21,21 +21,21 @@ public class Student {
 		this.alergies = alergies;
 		this.uncompatible = uncompatible;
 		
-		switch(alergies.toUpperCase())
+		switch(Character.toUpperCase(alergies))
 		{
-		case "NO":
+		case 'N':
 			isAlergicToCats = false;
 			isAlergicToDogs = false;
 			break;
-		case "DOG":
+		case 'D':
 			isAlergicToCats = false;
 			isAlergicToDogs = true;
 			break;
-		case "CAT":
+		case 'C':
 			isAlergicToCats = true;
 			isAlergicToDogs = false;
 			break;
-		case "BOTH":
+		case 'B':
 			isAlergicToCats = true;
 			isAlergicToDogs = true;
 			break;
@@ -43,7 +43,7 @@ public class Student {
 	}
 	
 	public Student(String firstName, String lastName, int yearsInChoir, 
-			char gender, String alergies)
+			char gender, char alergies)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -52,21 +52,21 @@ public class Student {
 		this.uncompatible = "";
 		this.alergies = alergies;
 		
-		switch(alergies.toUpperCase())
+		switch(Character.toUpperCase(alergies))
 		{
-		case "NO":
+		case 'N':
 			isAlergicToCats = false;
 			isAlergicToDogs = false;
 			break;
-		case "DOG":
+		case 'D':
 			isAlergicToCats = false;
 			isAlergicToDogs = true;
 			break;
-		case "CAT":
+		case 'C':
 			isAlergicToCats = true;
 			isAlergicToDogs = false;
 			break;
-		case "BOTH":
+		case 'B':
 			isAlergicToCats = true;
 			isAlergicToDogs = true;
 			break;
@@ -117,11 +117,11 @@ public class Student {
 		this.isAlergicToDogs = isAlergicToDogs;
 	}
 	
-	public void setAlergies(String alergies) {
+	public void setAlergies(char alergies) {
 		this.alergies = alergies;
 	}
 	
-	public String getAlergies() {
+	public char getAlergies() {
 		return alergies;
 	}
 	

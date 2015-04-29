@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,9 +14,14 @@ import org.apache.poi.*;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import Algorithm.Algorithm;
 import Algorithm.HostHome;
@@ -32,8 +38,8 @@ public class ImportFromExcel2 {
 		Scanner S = new Scanner(F);
 		S.useDelimiter(",");
 		String info[], line;
-		String nameF, nameL, alergies, compatibility;
-		char gender;
+		String nameF, nameL, compatibility;
+		char gender, alergies;
 		int years;
 		while (S.hasNextLine()) {
 			line = S.nextLine();
@@ -42,7 +48,7 @@ public class ImportFromExcel2 {
 			nameL = info[1];
 			gender = info[2].charAt(0);
 			years = Integer.parseInt(info[3]);
-			alergies = info[4];
+			alergies = info[4].charAt(0);
 			try {
 				compatibility = info[5];
 				student.add(new Student(nameF, nameL, years, gender, alergies, compatibility));
@@ -90,6 +96,7 @@ public class ImportFromExcel2 {
 		ArrayList<Student> unscheduledStudents = new ArrayList<Student>();
 		if (group.equals("UCO")) {
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
+			Algorithm.print(this.hostHomeList,  unscheduledStudents);
 			printOutputCSV(this.hostHomeList, unscheduledStudents);
 		}
 		if (group.equals("Women's Choir")) {
@@ -155,6 +162,58 @@ public class ImportFromExcel2 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Student> grabStudentListExcel(ArrayList<Student> student, String fileName) throws FileNotFoundException {		
+		InputStream inp = null;
+		Workbook inputWorkbook = null;
+		
+		try {
+			inp = new FileInputStream(fileName);
+			inputWorkbook = WorkbookFactory.create(inp);
+		} catch (InvalidFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Sheet sheet = inputWorkbook.getSheetAt(0);
+	    for (Row row : sheet) {
+	    	ArrayList<String> info = new ArrayList<String>();
+	      for (Cell cell : row) {
+	        info.add(cell.getStringCellValue());
+	      }
+	      if(info.size() == 6)
+	    	  student.add(new Student(info.get(0), info.get(1), Integer.parseInt(info.get(2)), info.get(3).charAt(0), info.get(4).charAt(0), info.get(5)));
+	      else student.add(new Student(info.get(0), info.get(1), Integer.parseInt(info.get(2)), info.get(3).charAt(0), info.get(4).charAt(0)));
+	    }
+		
+//		File F = new File(fileName);
+//		Scanner S = new Scanner(F);
+//		S.useDelimiter(",");
+//		String info[], line;
+//		String nameF, nameL, alergies, compatibility;
+//		char gender;
+//		int years;
+//		while (S.hasNextLine()) {
+//			line = S.nextLine();
+//			info = line.split(",");
+//			nameF = info[0];
+//			nameL = info[1];
+//			gender = info[2].charAt(0);
+//			years = Integer.parseInt(info[3]);
+//			alergies = info[4];
+//			try {
+//				compatibility = info[5];
+//				student.add(new Student(nameF, nameL, years, gender, alergies, compatibility));
+//			} catch (Exception e) {
+//				student.add(new Student(nameF, nameL, years, gender, alergies));
+//			}
+//		}
+//		S.close();
+		return student;
 	}
 	
 	public void printOutputExcel(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
