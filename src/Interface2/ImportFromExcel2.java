@@ -218,28 +218,84 @@ public class ImportFromExcel2 {
 	
 	public void printOutputExcel(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
 		try {
-			FileInputStream output = new FileInputStream(new File("Output.xlsx"));
-			HSSFWorkbook outputWorkbook = new HSSFWorkbook(output);
-			HSSFSheet outputSheet = outputWorkbook.getSheetAt(0);
-			
-			HSSFCellStyle label = outputWorkbook.createCellStyle();
-			label.setBorderBottom(HSSFCellStyle.BORDER_THICK);
-			label.setBorderTop(HSSFCellStyle.BORDER_THICK);
-			label.setBorderRight(HSSFCellStyle.BORDER_THICK);
-			label.setBorderLeft(HSSFCellStyle.BORDER_THICK);
-			
-			Cell currentCell = null;
-			int currentRow = 0;
-			int currentCol = 0;
-			currentCell = outputSheet.getRow(currentRow).getCell(currentCol);
-			currentCell.setCellValue("Host Home");
-			currentCol += 2;
-			currentCell.setCellValue("Students");
-			
-//			for (HostHome currentHost : hostHomeList) {
-//				currentCell = 
-//			}
-			
+			Workbook wb = new XSSFWorkbook();
+		    Sheet sheet = wb.createSheet("housing list");
+		    sheet.setDefaultColumnWidth(20);
+		    sheet.setZoom(3,4);
+		    
+		    CellStyle style = wb.createCellStyle();
+		    style.setBorderBottom(CellStyle.BORDER_MEDIUM);
+		    style.setBorderLeft(CellStyle.BORDER_MEDIUM);
+		    style.setBorderRight(CellStyle.BORDER_MEDIUM);
+		    style.setBorderTop(CellStyle.BORDER_MEDIUM);
+		    
+		    int currentRow = 0;
+		    int currentCell = 0;
+		    
+		    
+		    Row row = sheet.createRow(currentRow);
+		    
+		    Cell cell = row.createCell(currentCell);
+		    cell.setCellStyle(style);
+		    cell.setCellValue("Host Homes");
+		    currentCell += 2;
+		    cell = row.createCell(currentCell);
+		    cell.setCellStyle(style);
+		    cell.setCellValue("Students");
+
+		    currentRow++;
+		    for (HostHome currentHome : hostHomeList) {
+		    	row = sheet.createRow(currentRow);
+		    	currentCell = 0;
+		    	row.createCell(currentCell).setCellValue(currentHome.getLastName());
+		    	currentCell += 2;
+		    	for (Student currentStudent : currentHome.getStudentsTaking()) {
+		    		row.createCell(currentCell).setCellValue(currentStudent.getName());
+		    		currentCell++;
+		    	}
+		    	
+		    	currentRow++;
+		    }
+		    
+		    Sheet sheet1 = wb.createSheet("Unscheduled Students");
+		    sheet1.setDefaultColumnWidth(20);
+		    sheet1.setZoom(3,4);
+		    
+		    currentRow = 0;
+		    currentCell = 0;
+		    row = sheet1.createRow(currentRow);
+		    cell = row.createCell(currentCell);
+		    cell.setCellStyle(style);
+		    cell.setCellValue("Unscheduled Students");
+		    currentRow++;
+		    
+		    for (Student currentStudent : unscheduledStudents) {
+		    	row = sheet1.createRow(currentRow);
+		    	
+		    	cell = row.createCell(currentCell);
+		    	cell.setCellValue(currentStudent.getFirstName());
+		    	currentCell++;
+		    	cell = row.createCell(currentCell);
+		    	cell.setCellValue(currentStudent.getLastName());
+		    	currentCell++;
+		    	cell = row.createCell(currentCell);
+		    	cell.setCellValue(currentStudent.getGender());
+		    	currentCell++;
+		    	cell = row.createCell(currentCell);
+		    	cell.setCellValue(currentStudent.getYearsInChoir());
+		    	currentCell++;
+		    	cell = row.createCell(currentCell);
+		    	cell.setCellValue(currentStudent.getAlergies());
+		    	currentCell = 0;
+		    	
+		    	currentRow++;
+		    }
+
+		    // Write the output to a file
+		    FileOutputStream fileOut = new FileOutputStream("Output.xlsx");
+		    wb.write(fileOut);
+		    fileOut.close();
+		    wb.close();
 			
 			
 		} catch (IOException e) {
