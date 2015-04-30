@@ -6,6 +6,7 @@ public class HostHome {
 	private ArrayList<Student> studentsTaking;
 	private String lastName;
 	private int maxStudents;
+	private int numStudentsAvailable;
 	private boolean hasCats;
 	private boolean hasDogs;
 	private char genderTaking;
@@ -15,6 +16,7 @@ public class HostHome {
 	{
 		studentsTaking = new ArrayList<Student>();
 		this.maxStudents = maxStudents;
+		this.numStudentsAvailable = maxStudents;
 		this.genderTaking = gender;
 		hasUpperClassman = false;
 		this.lastName = lastName;
@@ -94,5 +96,13 @@ public class HostHome {
 
 	public void setHasUpperClassman(boolean hasUpperClassman) {
 		this.hasUpperClassman = hasUpperClassman;
+	}
+
+	public int getNumStudentsAvailable() {
+		return numStudentsAvailable;
+	}
+
+	public void setNumStudentsAvailable(int numStudentsAvailable) {
+		this.numStudentsAvailable = numStudentsAvailable;
 	}
 }

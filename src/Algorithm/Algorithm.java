@@ -77,6 +77,7 @@ public class Algorithm {
 					if(schedule) {
 						currentHome.getStudentsTaking().add(student);
 						studentScheduled = true;
+						currentHome.setNumStudentsAvailable(currentHome.getNumStudentsAvailable() - 1);
 					}
 					
 					homeCount++;
