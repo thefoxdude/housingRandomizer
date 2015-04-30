@@ -98,6 +98,7 @@ public class ImportFromExcel2 {
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
 			Algorithm.print(this.hostHomeList,  unscheduledStudents);
 			printOutputCSV(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents);
 		}
 		if (group.equals("Women's Choir")) {
 			
@@ -262,7 +263,8 @@ public class ImportFromExcel2 {
 		    sheet1.setZoom(3,4);
 		    
 		    currentRow = 0;
-		    currentCell = 0;
+		    currentCell = 1;
+		    int studentNum = 0;
 		    row = sheet1.createRow(currentRow);
 		    cell = row.createCell(currentCell);
 		    cell.setCellStyle(style);
@@ -271,7 +273,8 @@ public class ImportFromExcel2 {
 		    
 		    for (Student currentStudent : unscheduledStudents) {
 		    	row = sheet1.createRow(currentRow);
-		    	
+		    	cell = row.createCell(0);
+		    	cell.setCellValue(studentNum);
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getFirstName());
 		    	currentCell++;
@@ -286,7 +289,8 @@ public class ImportFromExcel2 {
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getAlergies());
-		    	currentCell = 0;
+		    	currentCell = 1;
+		    	studentNum++;
 		    	
 		    	currentRow++;
 		    }
