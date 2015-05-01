@@ -1,39 +1,64 @@
 package Interface;
 
+import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.awt.Font;
 
-import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
-import Algorithm.Student;
-import Algorithm.HostHome;
-import Algorithm.Algorithm;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.JFileChooser;
+
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
 	
-	private int numOfStudents = 0;
-	private int numOfHosts = 0;
-	
 	private JPanel holder;
-	private Home home = new Home();
-	private Students students = new Students();
-	private Hosts hosts = new Hosts();
-	
-	private ArrayList<Student> studentList = new ArrayList<Student>();
-	private ArrayList<HostHome> hostHomeList = new ArrayList<HostHome>();
-	private ImportFromExcel importFromExcel = new ImportFromExcel();
-	
-	private JButton enter = new JButton();
-	private JButton moveToHosts = new JButton();
-	private JButton algorithmize = new JButton();
+	private JTextField studentLocation;
+	private JTextField hostLocation;
+	private JComboBox<String> groupHolder;
+	String groupName;
 
+	PrintWriter fileWriter;
+	Scanner myReader;
+	String studentFilePath;
+	String hostFilePath;
+	JFileChooser myChooser;
+	
+	private ImportFromExcel importCall = new ImportFromExcel();
+	private JPanel panel;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -54,80 +79,255 @@ public class Interface extends JFrame {
 	 * Create the frame.
 	 */
 	public Interface() {
+		//Start by reading the file names that are listed in the file.  If there are no files (it is the first time using the system)
+		//the locations are defaulted to empty strings.
+		try {
+			myReader = new Scanner(new File("ExcelFileLocations.txt"));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		if(myReader.hasNextLine())
+			studentFilePath = myReader.nextLine();
+		else studentFilePath = "";
+		if(myReader.hasNextLine())
+			hostFilePath = myReader.nextLine();
+		else hostFilePath = "";
+		if(myReader.hasNextLine())
+			groupName = myReader.nextLine();
+		else groupName = "";
+		
+		//Clears the file and opens up the file for writing
+		try {
+			fileWriter = new PrintWriter(new FileWriter("ExcelFileLocations.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		myChooser = new JFileChooser();
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				fileWriter.println(studentFilePath);
+				fileWriter.println(hostFilePath);
+				fileWriter.println(groupName);
+				fileWriter.close();
+			}
+		});
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(50, 50, 1015, 600);
+		setBounds(150,100,460,500);
 		holder = new JPanel();
 		holder.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(holder);
+		holder.setBackground(new Color(226, 204, 168));
+		holder.setBounds(0, 0, 1000, 600);
 		holder.setLayout(null);
 		
-		enter = home.getEnter();
-		enter.addMouseListener(new MouseAdapter() {
+		JTextField welcome = new JTextField("Welcome to the Housing Randomizer");
+		welcome.setForeground(new Color(255, 255, 255));
+		welcome.setBounds(40, 21, 350, 50);
+		welcome.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		welcome.setEditable(false);
+		welcome.setBackground(new Color(0, 37, 84));
+		welcome.setHorizontalAlignment(SwingConstants.CENTER);
+		welcome.setBorder(BorderFactory.createEmptyBorder());
+		getContentPane().add(welcome);
+		
+		JEditorPane topBar = new JEditorPane();
+		topBar.setBounds(0, 0, 444, 90);
+		topBar.setEnabled(false);
+		topBar.setEditable(false);
+		topBar.setBackground(new Color(0, 37, 84));
+		getContentPane().add(topBar);
+		
+		panel = new JPanel();
+		panel.setBackground(new Color(226, 204, 168));
+		panel.setBounds(54, 119, 336, 269);
+		panel.setBorder(new LineBorder(Color.GRAY));
+		holder.add(panel);
+		panel.setLayout(null);
+		
+		JLabel studentLabel = new JLabel("File Location For Student");
+		studentLabel.setBounds(20, 22, 200, 14);
+		panel.add(studentLabel);
+		studentLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		studentLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		studentLocation = new JTextField();
+		studentLocation.setBounds(20, 47, 200, 20);
+		panel.add(studentLocation);
+		studentLocation.setColumns(10);
+		studentLocation.setText(studentFilePath);
+		
+		JLabel hostLabel = new JLabel("File Location For Hosts");
+		hostLabel.setBounds(20, 90, 200, 14);
+		panel.add(hostLabel);
+		hostLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		hostLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JButton studentBrowse = new JButton("Browse...");
+		studentBrowse.setBounds(230, 46, 89, 23);
+		panel.add(studentBrowse);
+		
+		hostLocation = new JTextField();
+		hostLocation.setBounds(20, 115, 200, 20);
+		panel.add(hostLocation);
+		hostLocation.setColumns(10);
+		hostLocation.setText(hostFilePath);
+		
+		JButton hostBrowse = new JButton("Browse...");
+		hostBrowse.setBounds(230, 114, 89, 23);
+		panel.add(hostBrowse);
+		
+		JLabel groupLabel = new JLabel("Group Name");
+		groupLabel.setBounds(20, 160, 200, 18);
+		panel.add(groupLabel);
+		groupLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		groupLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		groupHolder = new JComboBox<String>();
+		groupHolder.setBounds(20, 189, 125, 20);
+		panel.add(groupHolder);
+		groupHolder.setModel(new DefaultComboBoxModel<String>(new String[] {"", "UCO", "Women's Choir", "New Song", "Male Choral"}));
+		switch(groupName)
+		{
+		case "":
+			groupHolder.setSelectedIndex(0);
+			break;
+		case "UCO":
+			groupHolder.setSelectedIndex(1);
+			break;
+		case "Women's Choir":
+			groupHolder.setSelectedIndex(2);
+			break;
+		case "New Song":
+			groupHolder.setSelectedIndex(3);
+			break;
+		case "Male Choral":
+			groupHolder.setSelectedIndex(4);
+			break;
+		}
+		
+		JButton algorithmButton = new JButton("Create Groups");
+		algorithmButton.setEnabled(false);
+		checkCreateGroupButton(algorithmButton);
+		algorithmButton.setBounds(199, 224, 120, 23);
+		panel.add(algorithmButton);
+		algorithmButton.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				numOfStudents = home.getNumOfStudents();
-				try {
-					students.populateStudents();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
+			public void mouseClicked(MouseEvent e) {
+				if(algorithmButton.isEnabled())
+				{
+					studentFilePath = studentLocation.getText();
+					hostFilePath = hostLocation.getText();
+					importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
+					fileWriter.println(studentFilePath);
+					fileWriter.println(hostFilePath);
+					fileWriter.println(groupName);
+					fileWriter.close();
+					
+					try {
+						Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\Output.xlsx"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					System.exit(0);
 				}
-				students.setNumOfStudents(numOfStudents);
-				home.setVisible(false);
-				students.setVisible(true);
-				hosts.setVisible(false);
 			}
 		});
 		
-		moveToHosts = students.getMoveToHosts();
-		moveToHosts.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				numOfHosts = home.getNumOfHosts();
-				try {
-					hosts.populateHosts();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				hosts.setNumOfHosts(numOfHosts);
-				home.setVisible(false);
-				students.setVisible(false);
-				hosts.setVisible(true);
+		studentLocation.getDocument().addDocumentListener(new DocumentListener() {
+
+		     public void removeUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void insertUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void changedUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+		     
+		     public void doSomething()
+		     {
+				studentFilePath = studentLocation.getText();
+				checkCreateGroupButton(algorithmButton);
+		     }
+		  });
+		
+		hostLocation.getDocument().addDocumentListener(new DocumentListener() {
+
+		     public void removeUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void insertUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void changedUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+		     
+		     public void doSomething()
+		     {
+				hostFilePath = hostLocation.getText();
+				checkCreateGroupButton(algorithmButton);
+		     }
+		  });
+		
+		groupHolder.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				groupName = (String) groupHolder.getSelectedItem();
+				checkCreateGroupButton(algorithmButton);
 			}
 		});
 		
-		algorithmize = hosts.getAlgorithmize();
-		algorithmize.addMouseListener(new MouseAdapter() {
+		hostBrowse.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-					studentList = importFromExcel.grabStudentList(studentList);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				try {
-					hostHomeList = importFromExcel.grabHostList(hostHomeList);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-				
-				//Added in a bit of code to take the output from the algorithm and print it 
-				//to the console to check if it works
-				ArrayList<Student> unscheduledStudents = Algorithm.scheduleUCO(studentList, hostHomeList);
-				Algorithm.print(hostHomeList, unscheduledStudents);
-				home.setVisible(false);
-				students.setVisible(false);
-				hosts.setVisible(true);
+			public void mouseClicked(MouseEvent e) {
+					//Read in the file name.  Open the explorer to that path, or open the
+					//user folder if it does not find one.
+					if(hostFilePath.equals(""))	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(hostFilePath));
+					int result = myChooser.showOpenDialog(hostBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						hostFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					hostLocation.setText(hostFilePath);
 			}
 		});
-		
-		// adding the panels
-		add(home);
-		add(students);
-		add(hosts);
-		
-		// setting visibility
-		home.setVisible(true);
-		students.setVisible(false);
-		hosts.setVisible(false);
+		studentBrowse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+					//Read in the file name.  Open the explorer to that path, or open the
+					//user folder if it does not find one.
+					if(studentFilePath.equals(""))	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(studentFilePath));
+					int result = myChooser.showOpenDialog(studentBrowse);
+					if (result == JFileChooser.APPROVE_OPTION)
+						studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
+					studentLocation.setText(studentFilePath);
+			}
+		});
+	}
+	
+	public void checkCreateGroupButton(JButton myButton)
+	{
+		if(!studentFilePath.equals("") && !hostFilePath.equals("") && !groupName.equals(""))
+			myButton.setEnabled(true);
+		else myButton.setEnabled(false);
+	}
+	
+	public Color getPanelBackground() {
+		return panel.getBackground();
+	}
+	public void setPanelBackground(Color background) {
+		panel.setBackground(background);
 	}
 }
