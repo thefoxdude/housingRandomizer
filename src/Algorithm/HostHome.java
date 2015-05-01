@@ -42,6 +42,11 @@ public class HostHome {
 		}
 	}
 	
+	public String numStudentsOutOfTotal()
+	{
+		return studentsTaking.size() + " of " + maxStudents;
+	}
+	
 	public ArrayList<Student> getStudentsTaking() {
 		return studentsTaking;
 	}
