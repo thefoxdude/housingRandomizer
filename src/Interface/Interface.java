@@ -228,7 +228,7 @@ public class Interface extends JFrame {
 					fileWriter.close();
 					
 					try {
-						Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\Output.xlsx"));
+						Desktop.getDesktop().open(new File("C:\\Users\\Daniel\\workspace\\housingRandomizer\\Output.xlsx"));
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
