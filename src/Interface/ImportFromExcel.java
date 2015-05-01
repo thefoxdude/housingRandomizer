@@ -76,8 +76,8 @@ public class ImportFromExcel {
 		Scanner S = new Scanner(F);
 		S.useDelimiter(",");
 		String line, info[];
-		String nameL, alergies;
-		char gender;
+		String nameL;
+		char gender, alergies;
 		int numberTaking;
 		while (S.hasNextLine()) {
 			line = S.nextLine();
@@ -85,7 +85,7 @@ public class ImportFromExcel {
 			nameL = info[0];
 			gender = info[1].charAt(0);
 			numberTaking = Integer.parseInt(info[3]);
-			alergies = info[2];
+			alergies = info[2].charAt(0);
 			hostHome.add(new HostHome(nameL, numberTaking, alergies, gender));
 		}
 		S.close();

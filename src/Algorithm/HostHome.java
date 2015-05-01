@@ -11,7 +11,7 @@ public class HostHome {
 	private char genderTaking;
 	private boolean hasUpperClassman;
 	
-	public HostHome(String lastName, int maxStudents, String allergies, char gender)
+	public HostHome(String lastName, int maxStudents, char allergies, char gender)
 	{
 		studentsTaking = new ArrayList<Student>();
 		this.maxStudents = maxStudents;
@@ -19,21 +19,21 @@ public class HostHome {
 		hasUpperClassman = false;
 		this.lastName = lastName;
 		
-		switch(allergies.toUpperCase())
+		switch(Character.toUpperCase(allergies))
 		{
-		case "NO":
+		case 'N':
 			hasCats = false;
 			hasDogs = false;
 			break;
-		case "DOG":
+		case 'D':
 			hasCats = false;
 			hasDogs = true;
 			break;
-		case "CAT":
+		case 'C':
 			hasCats = true;
 			hasDogs = false;
 			break;
-		case "BOTH":
+		case 'B':
 			hasCats = true;
 			hasDogs = true;
 			break;

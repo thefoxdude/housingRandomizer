@@ -105,13 +105,6 @@ public class Interface2 extends JFrame {
 		
 		myChooser = new JFileChooser();
 		
-		//Test code used to open up files
-		try {
-			Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\students.csv"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -234,6 +227,14 @@ public class Interface2 extends JFrame {
 					fileWriter.println(hostFilePath);
 					fileWriter.println(groupName);
 					fileWriter.close();
+					
+					try {
+						Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\Output.xlsx"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					System.exit(0);
 				}
 			}
 		});
