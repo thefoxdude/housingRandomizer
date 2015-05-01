@@ -105,7 +105,6 @@ public class Interface2 extends JFrame {
 		
 		myChooser = new JFileChooser();
 		
-		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {

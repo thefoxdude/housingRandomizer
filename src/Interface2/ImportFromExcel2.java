@@ -10,10 +10,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import org.apache.poi.*;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -67,6 +63,15 @@ public class ImportFromExcel2 {
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
 			printOutputExcel(this.hostHomeList, unscheduledStudents);
 			break;
+		}
+		if (group.equals("Women's Choir")) {
+			
+		}
+		if (group.equals("New Song")) {
+			
+		}
+		if (group.equals("Male Choral")) {
+			
 		}
 	}
 	
@@ -180,7 +185,8 @@ public class ImportFromExcel2 {
 		    sheet1.setZoom(3,4);
 		    
 		    currentRow = 0;
-		    currentCell = 0;
+		    currentCell = 1;
+		    int studentNum = 0;
 		    row = sheet1.createRow(currentRow);
 		    cell = row.createCell(currentCell);
 		    cell.setCellStyle(style);
@@ -189,7 +195,8 @@ public class ImportFromExcel2 {
 		    
 		    for (Student currentStudent : unscheduledStudents) {
 		    	row = sheet1.createRow(currentRow);
-		    	
+		    	cell = row.createCell(0);
+		    	cell.setCellValue(studentNum);
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getFirstName());
 		    	currentCell++;
@@ -204,7 +211,8 @@ public class ImportFromExcel2 {
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getAlergies());
-		    	currentCell = 0;
+		    	currentCell = 1;
+		    	studentNum++;
 		    	
 		    	currentRow++;
 		    }
