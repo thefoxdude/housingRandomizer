@@ -44,20 +44,22 @@ import java.awt.event.ActionEvent;
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
 	
-	private JPanel holder;
+	private JPanel base;
+	private JPanel controlContainer;
+
 	private JTextField studentLocation;
 	private JTextField hostLocation;
-	private JComboBox<String> groupHolder;
-	String groupName;
+	private JTextField outputLocation;
 
+	private JComboBox<String> groupHolder;
+	
 	PrintWriter fileWriter;
 	Scanner myReader;
-	String studentFilePath;
-	String hostFilePath;
+	String studentFilePath, hostFilePath, outputFilePath, groupName;
 	JFileChooser myChooser;
+	boolean genNewFile = false;
 	
 	private ImportFromExcel importCall = new ImportFromExcel();
-	private JPanel panel;
 	
 	/**
 	 * Launch the application.
@@ -93,6 +95,9 @@ public class Interface extends JFrame {
 			hostFilePath = myReader.nextLine();
 		else hostFilePath = "";
 		if(myReader.hasNextLine())
+			outputFilePath = myReader.nextLine();
+		else outputFilePath = "";
+		if(myReader.hasNextLine())
 			groupName = myReader.nextLine();
 		else groupName = "";
 		
@@ -110,6 +115,7 @@ public class Interface extends JFrame {
 			public void windowClosing(WindowEvent arg0) {
 				fileWriter.println(studentFilePath);
 				fileWriter.println(hostFilePath);
+				fileWriter.println(outputFilePath);
 				fileWriter.println(groupName);
 				fileWriter.close();
 			}
@@ -117,12 +123,12 @@ public class Interface extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(150,100,460,500);
-		holder = new JPanel();
-		holder.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(holder);
-		holder.setBackground(new Color(226, 204, 168));
-		holder.setBounds(0, 0, 1000, 600);
-		holder.setLayout(null);
+		base = new JPanel();
+		base.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(base);
+		base.setBackground(new Color(226, 204, 168));
+		base.setBounds(0, 0, 1000, 600);
+		base.setLayout(null);
 		
 		JTextField welcome = new JTextField("Welcome to the Housing Randomizer");
 		welcome.setForeground(new Color(255, 255, 255));
@@ -141,54 +147,54 @@ public class Interface extends JFrame {
 		topBar.setBackground(new Color(0, 37, 84));
 		getContentPane().add(topBar);
 		
-		panel = new JPanel();
-		panel.setBackground(new Color(226, 204, 168));
-		panel.setBounds(54, 119, 336, 269);
-		panel.setBorder(new LineBorder(Color.GRAY));
-		holder.add(panel);
-		panel.setLayout(null);
+		controlContainer = new JPanel();
+		controlContainer.setBackground(new Color(226, 204, 168));
+		controlContainer.setBounds(54, 119, 336, 331);
+		controlContainer.setBorder(new LineBorder(Color.GRAY));
+		base.add(controlContainer);
+		controlContainer.setLayout(null);
 		
 		JLabel studentLabel = new JLabel("File Location For Student");
 		studentLabel.setBounds(20, 22, 200, 14);
-		panel.add(studentLabel);
+		controlContainer.add(studentLabel);
 		studentLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		studentLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		studentLocation = new JTextField();
 		studentLocation.setBounds(20, 47, 200, 20);
-		panel.add(studentLocation);
+		controlContainer.add(studentLocation);
 		studentLocation.setColumns(10);
 		studentLocation.setText(studentFilePath);
 		
 		JLabel hostLabel = new JLabel("File Location For Hosts");
 		hostLabel.setBounds(20, 90, 200, 14);
-		panel.add(hostLabel);
+		controlContainer.add(hostLabel);
 		hostLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		hostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		JButton studentBrowse = new JButton("Browse...");
 		studentBrowse.setBounds(230, 46, 89, 23);
-		panel.add(studentBrowse);
+		controlContainer.add(studentBrowse);
 		
 		hostLocation = new JTextField();
 		hostLocation.setBounds(20, 115, 200, 20);
-		panel.add(hostLocation);
+		controlContainer.add(hostLocation);
 		hostLocation.setColumns(10);
 		hostLocation.setText(hostFilePath);
 		
 		JButton hostBrowse = new JButton("Browse...");
 		hostBrowse.setBounds(230, 114, 89, 23);
-		panel.add(hostBrowse);
+		controlContainer.add(hostBrowse);
 		
 		JLabel groupLabel = new JLabel("Group Name");
-		groupLabel.setBounds(20, 160, 200, 18);
-		panel.add(groupLabel);
+		groupLabel.setBounds(20, 233, 200, 18);
+		controlContainer.add(groupLabel);
 		groupLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		groupLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		groupHolder = new JComboBox<String>();
-		groupHolder.setBounds(20, 189, 125, 20);
-		panel.add(groupHolder);
+		groupHolder.setBounds(20, 262, 125, 20);
+		controlContainer.add(groupHolder);
 		groupHolder.setModel(new DefaultComboBoxModel<String>(new String[] {"", "UCO", "Women's Choir", "New Song", "Male Choral"}));
 		switch(groupName)
 		{
@@ -212,8 +218,25 @@ public class Interface extends JFrame {
 		JButton algorithmButton = new JButton("Create Groups");
 		algorithmButton.setEnabled(false);
 		checkCreateGroupButton(algorithmButton);
-		algorithmButton.setBounds(199, 224, 120, 23);
-		panel.add(algorithmButton);
+		algorithmButton.setBounds(199, 297, 120, 23);
+		controlContainer.add(algorithmButton);
+		
+		JLabel outputLabel = new JLabel("File Location For Hosts");
+		outputLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		outputLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		outputLabel.setBounds(20, 165, 200, 14);
+		controlContainer.add(outputLabel);
+		
+		outputLocation = new JTextField();
+		outputLocation.setText((String) null);
+		outputLocation.setColumns(10);
+		outputLocation.setBounds(20, 190, 200, 20);
+		outputLocation.setText(outputFilePath);
+		controlContainer.add(outputLocation);
+		
+		JButton outputBrowse = new JButton("Browse...");
+		outputBrowse.setBounds(230, 189, 89, 23);
+		controlContainer.add(outputBrowse);
 		algorithmButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -221,18 +244,19 @@ public class Interface extends JFrame {
 				{
 					studentFilePath = studentLocation.getText();
 					hostFilePath = hostLocation.getText();
-					importCall.runAlgorithm(groupName, studentFilePath, hostFilePath);
-					fileWriter.println(studentFilePath);
-					fileWriter.println(hostFilePath);
-					fileWriter.println(groupName);
-					fileWriter.close();
+					importCall.runAlgorithm(groupName, studentFilePath, hostFilePath, outputFilePath, genNewFile);
 					
 					try {
-						Desktop.getDesktop().open(new File("C:\\Users\\Jacob\\git\\housingRandomizer\\Output.xlsx"));
+						Desktop.getDesktop().open(new File(outputFilePath));
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					fileWriter.println(studentFilePath);
+					fileWriter.println(hostFilePath);
+					fileWriter.println(outputFilePath);
+					fileWriter.println(groupName);
+					fileWriter.close();
 					System.exit(0);
 				}
 			}
@@ -280,6 +304,27 @@ public class Interface extends JFrame {
 		     }
 		  });
 		
+		outputLocation.getDocument().addDocumentListener(new DocumentListener() {
+
+		     public void removeUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void insertUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+
+		     public void changedUpdate(DocumentEvent e) {
+		    	 doSomething();
+		     }
+		     
+		     public void doSomething()
+		     {
+				outputFilePath = outputLocation.getText();
+				checkCreateGroupButton(algorithmButton);
+		     }
+		  });
+		
 		groupHolder.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				groupName = (String) groupHolder.getSelectedItem();
@@ -295,7 +340,7 @@ public class Interface extends JFrame {
 					if(hostFilePath.equals(""))	
 						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 					else myChooser.setCurrentDirectory(new File(hostFilePath));
-					int result = myChooser.showOpenDialog(hostBrowse);
+					int result = myChooser.showDialog(hostBrowse, "Select");
 					if (result == JFileChooser.APPROVE_OPTION)
 						hostFilePath = myChooser.getSelectedFile().getAbsolutePath();
 					hostLocation.setText(hostFilePath);
@@ -309,25 +354,45 @@ public class Interface extends JFrame {
 					if(studentFilePath.equals(""))	
 						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 					else myChooser.setCurrentDirectory(new File(studentFilePath));
-					int result = myChooser.showOpenDialog(studentBrowse);
+					int result = myChooser.showDialog(studentBrowse, "Select");
 					if (result == JFileChooser.APPROVE_OPTION)
 						studentFilePath = myChooser.getSelectedFile().getAbsolutePath();
 					studentLocation.setText(studentFilePath);
+			}
+		});
+		outputBrowse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+					//Read in the file name.  Open the explorer to that path, or open the
+					//user folder if it does not find one.
+					if(outputFilePath.equals(""))	
+						myChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+					else myChooser.setCurrentDirectory(new File(outputFilePath));
+					int result = myChooser.showDialog(outputBrowse, "Select");
+					if (result == JFileChooser.APPROVE_OPTION)
+					{
+						if(myChooser.getSelectedFile().exists())
+							genNewFile = false;
+						else genNewFile = true;
+						
+						outputFilePath = myChooser.getSelectedFile().getAbsolutePath();
+						outputLocation.setText(outputFilePath);
+					}
 			}
 		});
 	}
 	
 	public void checkCreateGroupButton(JButton myButton)
 	{
-		if(!studentFilePath.equals("") && !hostFilePath.equals("") && !groupName.equals(""))
+		if(!studentFilePath.equals("") && !hostFilePath.equals("") && !outputFilePath.equals("") && !groupName.equals(""))
 			myButton.setEnabled(true);
 		else myButton.setEnabled(false);
 	}
 	
 	public Color getPanelBackground() {
-		return panel.getBackground();
+		return controlContainer.getBackground();
 	}
 	public void setPanelBackground(Color background) {
-		panel.setBackground(background);
+		controlContainer.setBackground(background);
 	}
 }
