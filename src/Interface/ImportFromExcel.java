@@ -24,7 +24,7 @@ public class ImportFromExcel {
 	ArrayList<Student> studentList = new ArrayList<Student>();
 	ArrayList<HostHome> hostHomeList = new ArrayList<HostHome>();
 	
-	public void runAlgorithm(String group, String studentLocation, String hostLocation) {
+	public void runAlgorithm(String group, String studentLocation, String hostLocation, String outputLocation, boolean genNewFile) {
 		try {
 			this.studentList = grabStudentListExcel(studentList, studentLocation);
 		} catch (FileNotFoundException e) {
@@ -41,23 +41,23 @@ public class ImportFromExcel {
 		case("UCO"):
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
 //			Algorithm.print(this.hostHomeList,  unscheduledStudents);
-			printOutputExcel(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
 		case("Women's Choir"):
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
-			printOutputExcel(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
 		case("Male Choral"):
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
-			printOutputExcel(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
 		case("New Song"):
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
-			printOutputExcel(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
 		case(""):
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
-			printOutputExcel(this.hostHomeList, unscheduledStudents);
+			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
 		}
 		if (group.equals("Women's Choir")) {
@@ -135,7 +135,7 @@ public class ImportFromExcel {
 		return student;
 	}
 	
-	public void printOutputExcel(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents) {
+	public void printOutputExcel(ArrayList<HostHome> hostHomeList, ArrayList<Student> unscheduledStudents, String fileName, boolean genNewFile) {
 		try {
 			Workbook wb = new XSSFWorkbook();
 		    Sheet sheet = wb.createSheet("housing list");
