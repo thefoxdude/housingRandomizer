@@ -1,11 +1,13 @@
 package Interface;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -59,16 +61,7 @@ public class ImportFromExcel {
 			unscheduledStudents = Algorithm.scheduleUCO(this.studentList, this.hostHomeList);
 			printOutputExcel(this.hostHomeList, unscheduledStudents, outputLocation, genNewFile);
 			break;
-		}
-		if (group.equals("Women's Choir")) {
-			
-		}
-		if (group.equals("New Song")) {
-			
-		}
-		if (group.equals("Male Choral")) {
-			
-		}
+		} 
 	}
 	
 	public ArrayList<HostHome> grabHostListExcel(ArrayList<HostHome> hostHome, String fileName) throws FileNotFoundException {
@@ -151,7 +144,6 @@ public class ImportFromExcel {
 		    int currentRow = 0;
 		    int currentCell = 0;
 		    
-		    
 		    Row row = sheet.createRow(currentRow);
 		    
 		    Cell cell = row.createCell(currentCell);
@@ -161,6 +153,7 @@ public class ImportFromExcel {
 		    cell = row.createCell(currentCell);
 		    cell.setCellStyle(style);
 		    cell.setCellValue("Students");
+		    int studentNum = 0;
 
 		    currentRow++;
 		    for (HostHome currentHome : hostHomeList) {
@@ -171,9 +164,12 @@ public class ImportFromExcel {
 		    	for (Student currentStudent : currentHome.getStudentsTaking()) {
 		    		row.createCell(currentCell).setCellValue(currentStudent.getName());
 		    		currentCell++;
+		    		studentNum++;
 		    	}
+		    	row.createCell(1).setCellValue(Integer.toString(studentNum) + " of " + Integer.toString(currentHome.getMaxStudents()));
 		    	
 		    	currentRow++;
+		    	studentNum = 0;
 		    }
 		    
 		    Sheet sheet1 = wb.createSheet("Unscheduled Students");
@@ -182,7 +178,7 @@ public class ImportFromExcel {
 		    
 		    currentRow = 0;
 		    currentCell = 1;
-		    int studentNum = 0;
+		    studentNum = 0;
 		    row = sheet1.createRow(currentRow);
 		    cell = row.createCell(currentCell);
 		    cell.setCellStyle(style);
@@ -200,21 +196,30 @@ public class ImportFromExcel {
 		    	cell.setCellValue(currentStudent.getLastName());
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
-		    	cell.setCellValue(currentStudent.getGender());
+		    	cell.setCellValue(String.valueOf(currentStudent.getGender()));
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getYearsInChoir());
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
-		    	cell.setCellValue(currentStudent.getAlergies());
+		    	cell.setCellValue(String.valueOf(currentStudent.getAlergies()));
 		    	currentCell = 1;
 		    	studentNum++;
 		    	
 		    	currentRow++;
 		    }
-
+		    
+		    FileOutputStream fileOut;
 		    // Write the output to a file
-		    FileOutputStream fileOut = new FileOutputStream("Output.xlsx");
+		    if (genNewFile) {
+		    	fileOut = new FileOutputStream(new File("Output.xlsx"));
+		    }
+		    else if (!genNewFile) {
+		    	fileOut = new FileOutputStream("Output.xlsx");
+		    }
+		    else {
+		    	fileOut = new FileOutputStream("Errors.xlsx");
+		    }
 		    wb.write(fileOut);
 		    fileOut.close();
 		    wb.close();

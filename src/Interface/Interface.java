@@ -32,14 +32,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.JFileChooser;
-
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Interface extends JFrame {
 	private static final long serialVersionUID = 1;
@@ -221,7 +215,7 @@ public class Interface extends JFrame {
 		algorithmButton.setBounds(199, 297, 120, 23);
 		controlContainer.add(algorithmButton);
 		
-		JLabel outputLabel = new JLabel("File Location For Hosts");
+		JLabel outputLabel = new JLabel("File Location For Output");
 		outputLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		outputLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		outputLabel.setBounds(20, 165, 200, 14);
