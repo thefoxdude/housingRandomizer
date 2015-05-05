@@ -15,6 +15,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import Algorithm.Algorithm;
@@ -141,6 +143,12 @@ public class ImportFromExcel {
 		    style.setBorderRight(CellStyle.BORDER_MEDIUM);
 		    style.setBorderTop(CellStyle.BORDER_MEDIUM);
 		    
+		    CellStyle centered = wb.createCellStyle();
+		    centered.setAlignment(CellStyle.ALIGN_CENTER);
+		    
+		    CellStyle leftJustified = wb.createCellStyle();
+		    leftJustified.setAlignment(CellStyle.ALIGN_LEFT);
+		    
 		    int currentRow = 0;
 		    int currentCell = 0;
 		    
@@ -154,21 +162,38 @@ public class ImportFromExcel {
 		    cell.setCellStyle(style);
 		    cell.setCellValue("Students");
 		    int studentNum = 0;
-
+		    boolean doubleRow = false;
+		    int hostRow = 1;
 		    currentRow++;
 		    for (HostHome currentHome : hostHomeList) {
 		    	row = sheet.createRow(currentRow);
 		    	currentCell = 0;
 		    	row.createCell(currentCell).setCellValue(currentHome.getLastName());
 		    	currentCell += 2;
+		    	row.createCell(1);
 		    	for (Student currentStudent : currentHome.getStudentsTaking()) {
 		    		row.createCell(currentCell).setCellValue(currentStudent.getName());
-		    		currentCell++;
 		    		studentNum++;
+		    		if (currentCell > 5) {
+		    			currentRow++;
+		    			row = sheet.createRow(currentRow);
+		    			currentCell = 1;
+		    			doubleRow = true;
+		    		}
+		    		currentCell++;
 		    	}
-		    	row.createCell(1).setCellValue(Integer.toString(studentNum) + " of " + Integer.toString(currentHome.getMaxStudents()));
+		    	
+		    	cell = sheet.getRow(hostRow).getCell(1);
+		    	cell.setCellValue(Integer.toString(studentNum) + " of " + Integer.toString(currentHome.getMaxStudents()));
+		    	cell.setCellStyle(centered);
+		    	
+		    	if (doubleRow) {
+		    		hostRow++;
+		    		doubleRow = false;
+		    	}
 		    	
 		    	currentRow++;
+		    	hostRow++;
 		    	studentNum = 0;
 		    }
 		    
@@ -200,6 +225,7 @@ public class ImportFromExcel {
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(currentStudent.getYearsInChoir());
+		    	cell.setCellStyle(leftJustified);
 		    	currentCell++;
 		    	cell = row.createCell(currentCell);
 		    	cell.setCellValue(String.valueOf(currentStudent.getAlergies()));
@@ -209,6 +235,7 @@ public class ImportFromExcel {
 		    	currentRow++;
 		    }
 		    
+
 		    FileOutputStream fileOut;
 		    // Write the output to a file
 		    if (genNewFile) {
@@ -218,12 +245,11 @@ public class ImportFromExcel {
 		    	fileOut = new FileOutputStream("Output.xlsx");
 		    }
 		    else {
-		    	fileOut = new FileOutputStream("Errors.xlsx");
+		    	fileOut = new FileOutputStream(new File("Errors.xlsx"));
 		    }
 		    wb.write(fileOut);
 		    fileOut.close();
 		    wb.close();
-			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
